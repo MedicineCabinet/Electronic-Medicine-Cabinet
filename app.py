@@ -6,12 +6,12 @@ app = Flask(__name__)
 app.secret_key = '8d63cfa786bdee8fb79dbad79110d5c1'
 
 # Dummy user data for demonstration
-users = {"username123": "password123"}  # Using a username instead of an email
+users = {"username123": "password123"}
 
 @app.route('/', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form['username']  # Changed from 'email' to 'username'
+        username = request.form['username'] 
         password = request.form['password']
         if username in users and users[username] == password:
             session['user'] = username  # Store the username in the session
