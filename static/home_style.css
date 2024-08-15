@@ -6,7 +6,13 @@
     color: white;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+}
+
+/* Sidebar title */
+.sidebar-title {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: white;
 }
 
 /* Sidebar navigation links */
@@ -31,33 +37,58 @@
 
 /* Hover effect for sidebar links */
 .sidebar .nav-link:hover {
-    background-color: #218838;
+    color: black;
+    background-color: white;
     border-radius: 5px;
 }
 
-/* Responsive styles for smaller screens */
-@media (min-width: 768px) {
-    .offcanvas {
-        display: none;
-    }
+/* Sidebar footer for user greeting */
+.sidebar-footer {
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 1px solid #fff;
 }
 
-    /* Offcanvas for mobile */
+/* Header styles */
+header {
+    position: relative;
+    padding: 10px 20px;
+    background-color: #fff;
+    border-bottom: 1px solid #dee2e6;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* App name styles */
+header h1 {
+    font-size: 1.5rem;
+    margin-bottom: 0;
+}
+
+/* Responsive styles for medium and smaller screens */
+@media (max-width: 991.98px) {
     .offcanvas {
-        width: 250px;
+        width: 250px; /* Adjust width as needed */
         background-color: #28a745;
         color: white;
     }
 
     .offcanvas-body .nav-link {
-        font-size: 1.1rem;
+        font-size: 1.5rem;
+        color: white;
         padding: 12px;
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
     }
 
-    /* Hamburger icon position for mobile */
+    .offcanvas-body .nav-link:hover {
+        color: black;
+        background-color: white;
+        border-radius: 5px;
+    }
+
     .navbar-toggler {
         position: fixed;
         top: 10px;
@@ -67,7 +98,7 @@
 
     .navbar-toggler-icon {
         font-size: 1.8rem;
-        color: #333;
+        color: #333333;
     }
 }
 
@@ -77,5 +108,5 @@ main {
     background-color: #f8f9fa;
     min-height: 100vh;
     transition: margin-left 0.3s ease;
-    overflow-x: hidden; /* Prevent horizontal overflow */
+    overflow-x: hidden;
 }
