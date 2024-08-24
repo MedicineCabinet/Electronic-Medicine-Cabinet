@@ -55,7 +55,6 @@ body {
     border: 2px solid rgba(255, 255, 255, .2);
     border-radius: 40px;
     font-size: 16px;
-    color: #fff;
     padding: 20px 45px 20px 20px;
 }
 .input-box input::placeholder{
@@ -64,25 +63,27 @@ body {
 .input-box i{
     position: absolute;
     right: 20px;
-    top: 30%;
+    top: 50%;
     transform: translate(-50%);
     font-size: 20px;
+    cursor: pointer;
+    color: #fff;
 }
-.wrapper .remember-forgot{
+.wrapper .remember-me{
     display: flex;
     justify-content: space-between;
     font-size: 14.5px;
     margin: -15px 0 15px;
 }
-.remember-forgot label input{
+.remember-me label input{
     accent-color: #fff;
     margin-right: 3px;
 }
-.remember-forgot a{
+.remember-me a{
     color: #fff;
     text-decoration: none;
 }
-.remember-forgot a:hover{
+.remember-fme a:hover{
     text-decoration: underline;
 }
 .wrapper .btn{

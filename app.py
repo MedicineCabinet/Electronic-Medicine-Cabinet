@@ -7,6 +7,7 @@ app.secret_key = '8d63cfa786bdee8fb79dbad79110d5c1'
 # Dummy user data for demonstration
 users = {"username123": "password123"}
 
+#Session Timeout functinality
 @app.before_request
 def session_management():
     session.permanent = True
@@ -16,6 +17,7 @@ def session_management():
     if 'user' in session:
         session['last_activity'] = datetime.datetime.now()
 
+#Routing for the Login page
 @app.route('/', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -44,6 +46,7 @@ def login():
             flash('Invalid username or password', 'danger')
     return render_template('login.html')
 
+#Routing for the Home page
 @app.route('/home')
 def home():
     if 'user' in session:
@@ -56,6 +59,7 @@ def home():
     else:
         return redirect(url_for('login'))
 
+#Adding the functionality of Logout and Automatic Logout during Idle
 @app.route('/logout')
 def logout():
     session.pop('user', None)
