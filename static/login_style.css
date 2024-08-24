@@ -4,7 +4,7 @@
     box-sizing: border-box;
     font-family: "Poppins", sans-serif;
 }
-body{
+body {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -12,8 +12,17 @@ body{
     background: url('/static/bg.jpg') no-repeat;
     background-size: cover;
     background-position: center;
+    margin: 0;
 }
-.wrapper{
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+.wrapper {
     width: 420px;
     background: transparent;
     border: 2px solid rgba(255, 255, 255, .2);
@@ -22,6 +31,7 @@ body{
     border-radius: 12px;
     padding: 30px 40px;
     text-align: center; /* Center align the content */
+    margin: auto;
 }
 .wrapper img{
     width: 200px; /* Adjust the width of the logo */
@@ -100,4 +110,16 @@ body{
 }
 .register-link p a:hover{
     text-decoration: underline;
+}
+/* Flash message styling */
+.alert {
+    width: 100%;
+    max-width: 420px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 14.5px;
+    padding: 15px;
+    border-radius: 12px;
+    backdrop-filter: blur(9px);
+    border: 2px solid rgba(255, 255, 255, .2);
 }

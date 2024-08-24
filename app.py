@@ -10,7 +10,7 @@ users = {"username123": "password123"}
 @app.before_request
 def session_management():
     session.permanent = True
-    app.permanent_session_lifetime = datetime.timedelta(minutes=5)  # Set the session timeout (e.g., 5 minutes)
+    app.permanent_session_lifetime = datetime.timedelta(minutes=1)  # Set the session timeout (e.g., 1 minute)
     session.modified = True
 
     if 'user' in session:
@@ -24,16 +24,17 @@ def login():
         remember_me = 'remember_me' in request.form
 
         if username in users and users[username] == password:
-            session['user'] = username
-            session['last_activity'] = datetime.datetime.now()  # Set last activity time
+            session['user'] = username  # Store the username in the session
 
             resp = make_response(redirect(url_for('home')))
             
             if remember_me:
+                # Set cookies to remember the username and password for 30 days
                 resp.set_cookie('username', username, max_age=30*24*60*60)
                 resp.set_cookie('password', password, max_age=30*24*60*60)
                 resp.set_cookie('remember_me', 'checked', max_age=30*24*60*60)
             else:
+                # Clear the cookies if "Remember Me" is not checked
                 resp.delete_cookie('username')
                 resp.delete_cookie('password')
                 resp.delete_cookie('remember_me')
@@ -48,7 +49,8 @@ def home():
     if 'user' in session:
         last_activity = session.get('last_activity')
         now = datetime.datetime.now()
-        if last_activity and (now - last_activity).total_seconds() > 300:  # 5 minutes of inactivity
+        if last_activity and (now - last_activity).total_seconds() > 60:  # 1 minute of inactivity
+            flash('You have been automatically logged out due to inactivity', 'warning')
             return redirect(url_for('logout'))
         return render_template('home.html', user=session['user'])
     else:
@@ -57,11 +59,14 @@ def home():
 @app.route('/logout')
 def logout():
     session.pop('user', None)
-    resp = make_response(redirect(url_for('login')))
+    idle = request.args.get('idle')
+    resp = make_response(redirect(url_for('login', idle=idle)))
+    # Clear cookies on logout
     resp.delete_cookie('username')
     resp.delete_cookie('password')
     resp.delete_cookie('remember_me')
     return resp
+
 
 if __name__ == '__main__':
     app.run(debug=True)
