@@ -110,3 +110,10 @@ main {
     transition: margin-left 0.3s ease;
     overflow-x: hidden;
 }
+/* Highlight active link for both sidebars */
+.nav-link.active {
+    color: black;
+    background-color: white;
+    border-radius: 5px;
+}
+

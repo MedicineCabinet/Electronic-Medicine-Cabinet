@@ -14,33 +14,27 @@
             <!-- Sidebar for large screens -->
             <nav class="col-lg-2 d-none d-lg-block bg-success sidebar">
                 <div class="sidebar-content">
-                    <h2 class="h4 mb-0">Welcome, {{ user }}!</h2>
+                    <h2 class="sidebar-title">Welcome, {{ user }}!</h2>
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link active" href="#">
+                            <a class="nav-link" id="inventory-link" href="javascript:void(0);" onclick="loadContent('inventory', 'inventory-link')">
                                 <i class='bx bx-box'></i>
                                 Inventory
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" id="notification-link" href="javascript:void(0);" onclick="loadContent('notification', 'notification-link')">
                                 <i class='bx bx-bell'></i>
                                 Notification
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <i class='bx bx-cabinet'></i>
-                                Cabinet
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" id="accounts-link" href="javascript:void(0);" onclick="loadContent('accounts', 'accounts-link')">
                                 <i class='bx bx-cog'></i>
                                 Accounts
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item sidebar-footer">
                             <a class="nav-link text-danger" href="{{ url_for('logout') }}">
                                 <i class='bx bx-log-out'></i>
                                 Logout
@@ -53,36 +47,30 @@
             <!-- Offcanvas Sidebar for medium and smaller screens -->
             <div class="offcanvas offcanvas-start d-md-none" tabindex="-1" id="offcanvasSidebar" aria-labelledby="offcanvasSidebarLabel">
                 <div class="offcanvas-header">
-                    <h5 class="offcanvas-title" id="offcanvasSidebarLabel">Menu</h5>
+                    <h5 class="offcanvas-title" id="offcanvasSidebarLabel">Welcome, {{ user }}!</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
                 <div class="offcanvas-body">
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link active" href="#">
+                            <a class="nav-link" id="offcanvas-inventory-link" href="javascript:void(0);" onclick="loadContent('inventory', 'inventory-link', 'offcanvas-inventory-link')">
                                 <i class='bx bx-box'></i>
                                 Inventory
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" id="offcanvas-notification-link" href="javascript:void(0);" onclick="loadContent('notification', 'notification-link', 'offcanvas-notification-link')">
                                 <i class='bx bx-bell'></i>
                                 Notification
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <i class='bx bx-cabinet'></i>
-                                Cabinet
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" id="offcanvas-accounts-link" href="javascript:void(0);" onclick="loadContent('accounts', 'accounts-link', 'offcanvas-accounts-link')">
                                 <i class='bx bx-cog'></i>
                                 Accounts
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item sidebar-footer">
                             <a class="nav-link text-danger" href="{{ url_for('logout') }}">
                                 <i class='bx bx-log-out'></i>
                                 Logout
@@ -92,25 +80,61 @@
                 </div>
             </div>
 
-            <!-- Main content -->
+            <!-- Main content area -->
             <main class="col-lg-10 ms-sm-auto col-lg-10 px-md-4">
                 <header class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <!-- Toggler for medium screens and smaller -->
                     <div class="d-lg-none">
                         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-controls="offcanvasSidebar">
                             <i class='bx bx-menu navbar-toggler-icon'></i>
                         </button>
                     </div>
-
-                    <!-- App name -->
                     <h1 class="h2 mb-0">Electronic Medicine Cabinet</h1>
                 </header>
-                <p>This is your home page content. You can add more sections here as needed.</p>
+                
+                <!-- Load the default content here -->
+                <div id="main-content">
+                    {% include content %}
+                </div>
             </main>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ url_for('static', filename='idleLogout.js') }}"></script> <!-- Include the external JS file -->
+    <script src="{{ url_for('static', filename='idleLogout.js') }}"></script>
+    <script>
+        function loadContent(section, sidebarLinkId, offcanvasLinkId) {
+            // Fetch the new content
+            fetch(`/${section}`)
+                .then(response => response.text())
+                .then(html => {
+                    // Load the new content into the main content area
+                    document.getElementById('main-content').innerHTML = html;
+
+                    // Remove the "active" class from all sidebar links
+                    const sidebarLinks = document.querySelectorAll('.sidebar .nav-link');
+                    sidebarLinks.forEach(link => link.classList.remove('active'));
+
+                    // Remove the "active" class from all offcanvas links
+                    const offcanvasLinks = document.querySelectorAll('.offcanvas-body .nav-link');
+                    offcanvasLinks.forEach(link => link.classList.remove('active'));
+
+                    // Add the "active" class to the clicked sidebar link
+                    if (sidebarLinkId) {
+                        document.getElementById(sidebarLinkId).classList.add('active');
+                    }
+
+                    // Add the "active" class to the clicked offcanvas link
+                    if (offcanvasLinkId) {
+                        document.getElementById(offcanvasLinkId).classList.add('active');
+                    }
+                })
+                .catch(error => console.error('Error loading content:', error));
+        }
+
+        // Automatically load Inventory when the page is first loaded
+        document.addEventListener("DOMContentLoaded", function() {
+            loadContent('inventory', 'inventory-link', 'offcanvas-inventory-link');
+        });
+    </script>
 </body>
 </html>

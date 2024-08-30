@@ -55,7 +55,7 @@ def home():
         if last_activity and (now - last_activity).total_seconds() > 60:  # 1 minute of inactivity
             flash('You have been automatically logged out due to inactivity', 'warning')
             return redirect(url_for('logout'))
-        return render_template('home.html', user=session['user'])
+        return render_template('home.html', user=session['user'], content='inventory.html')
     else:
         return redirect(url_for('login'))
 
@@ -70,6 +70,18 @@ def logout():
     resp.delete_cookie('password')
     resp.delete_cookie('remember_me')
     return resp
+
+@app.route('/inventory')
+def inventory():
+    return render_template('inventory.html')
+
+@app.route('/notification')
+def notification():
+    return render_template('notification.html')
+
+@app.route('/accounts')
+def accounts():
+    return render_template('accounts.html')
 
 
 if __name__ == '__main__':
