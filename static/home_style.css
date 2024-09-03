@@ -1,5 +1,5 @@
-/* General sidebar styles */
-.sidebar {
+/* General sidebar and offcanvas styles */
+.sidebar, .offcanvas {
     height: 100vh;
     background-color: #28a745;
     padding: 10px;
@@ -8,15 +8,15 @@
     flex-direction: column;
 }
 
-/* Sidebar title */
-.sidebar-title {
+/* Sidebar and offcanvas title */
+.sidebar-title, .offcanvas-title {
     font-size: 1.5rem;
     margin-bottom: 20px;
     color: white;
 }
 
-/* Sidebar navigation links */
-.sidebar .nav-link {
+/* Sidebar and offcanvas navigation links */
+.sidebar .nav-link, .offcanvas-body .nav-link {
     color: white;
     display: flex;
     align-items: center;
@@ -29,14 +29,14 @@
 }
 
 /* Adjust icon size and prevent shrinking */
-.sidebar .nav-link i {
+.sidebar .nav-link i, .offcanvas-body .nav-link i {
     margin-right: 10px;
     font-size: 1.5rem;
     flex-shrink: 0;
 }
 
-/* Hover effect for sidebar links */
-.sidebar .nav-link:hover {
+/* Hover effect for sidebar and offcanvas links */
+.sidebar .nav-link:hover, .offcanvas-body .nav-link:hover {
     color: black;
     background-color: white;
     border-radius: 5px;
@@ -69,24 +69,7 @@ header h1 {
 /* Responsive styles for medium and smaller screens */
 @media (max-width: 991.98px) {
     .offcanvas {
-        width: 250px; /* Adjust width as needed */
-        background-color: #28a745;
-        color: white;
-    }
-
-    .offcanvas-body .nav-link {
-        font-size: 1.5rem;
-        color: white;
-        padding: 12px;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-    }
-
-    .offcanvas-body .nav-link:hover {
-        color: black;
-        background-color: white;
-        border-radius: 5px;
+        width: 220px; /* Adjust width as needed */
     }
 
     .navbar-toggler {
@@ -110,10 +93,10 @@ main {
     transition: margin-left 0.3s ease;
     overflow-x: hidden;
 }
+
 /* Highlight active link for both sidebars */
 .nav-link.active {
     color: black;
     background-color: white;
     border-radius: 5px;
 }
-
