@@ -7,14 +7,12 @@
     display: flex;
     flex-direction: column;
 }
-
 /* Sidebar and offcanvas title */
 .sidebar-title, .offcanvas-title {
     font-size: 1.5rem;
     margin-bottom: 20px;
     color: white;
 }
-
 /* Sidebar and offcanvas navigation links */
 .sidebar .nav-link, .offcanvas-body .nav-link {
     color: white;
@@ -27,28 +25,24 @@
     text-overflow: ellipsis;
     overflow: hidden;
 }
-
 /* Adjust icon size and prevent shrinking */
 .sidebar .nav-link i, .offcanvas-body .nav-link i {
     margin-right: 10px;
     font-size: 1.5rem;
     flex-shrink: 0;
 }
-
 /* Hover effect for sidebar and offcanvas links */
 .sidebar .nav-link:hover, .offcanvas-body .nav-link:hover {
     color: black;
     background-color: white;
     border-radius: 5px;
 }
-
 /* Sidebar footer for user greeting */
 .sidebar-footer {
     margin-top: auto;
     padding-top: 20px;
     border-top: 1px solid #fff;
 }
-
 /* Header styles */
 header {
     position: relative;
@@ -59,7 +53,6 @@ header {
     align-items: center;
     justify-content: space-between;
 }
-
 /* App name styles */
 header h1 {
     font-size: 1.5rem;
@@ -100,3 +93,56 @@ main {
     background-color: white;
     border-radius: 5px;
 }
+.inventory-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #28a745;
+    margin-bottom: 10px;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px; /* Space between the buttons */
+}
+
+.button-group .btn {
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+/* Search bar styling */
+.search-bar {
+    display: flex;
+    align-items: center;
+    position: relative; /* Ensure the icon is positioned correctly */
+    margin-bottom: 20px;
+    margin-left: 10px;
+}
+
+/* Adjusting the width of the search bar */
+.search-bar input {
+    width: 300px; /* Set a default width */
+    max-width: 100%; /* Ensure it doesn't overflow */
+    padding: 10px;
+    border-radius: 20px;
+    border: 1px solid #ced4da;
+    padding-left: 40px; /* Make space for the icon */
+    transition: width 0.3s ease; /* Smooth transition on resize */
+    height: 35px;
+}
+
+.search-bar i {
+    position: absolute;
+    left: 15px; /* Position the icon inside the search bar */
+    color: #6c757d;
+    font-size: 20px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .search-bar input {
+        width: 100%; /* Full width on smaller screens */
+    }
+}
+
+
