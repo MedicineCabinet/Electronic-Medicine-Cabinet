@@ -21,6 +21,7 @@
             justify-content: flex-end;
             flex-wrap: wrap;
             margin-bottom: 20px;
+            margin-top: 30px;
         }
 
         .button-container .btn {
@@ -48,14 +49,7 @@
 </head>
 <body>
     <div class="container mt-4">
-        <ul class="nav nav-tabs" id="inventoryTabs" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="medicine-tab" data-bs-toggle="tab" data-bs-target="#medicine" type="button" role="tab" aria-controls="medicine" aria-selected="true">Medicine Inventory</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="door-logs-tab" data-bs-toggle="tab" data-bs-target="#door-logs" type="button" role="tab" aria-controls="door-logs" aria-selected="false">Door Logs</button>
-            </li>
-        </ul>
+
         <div class="tab-content" id="inventory-tabs">
             <!-- Medicine Inventory Tab -->
             <div class="tab-pane fade show active" id="medicine" role="tabpanel"> <!-- Changed ID to match tab button -->
@@ -68,25 +62,25 @@
                     </div>
                     
                     <div class="button-group">
-                        <button class="btn btn-primary">Button 1</button>
-                        <button class="btn btn-primary">Button 2</button>
-                        <button class="btn btn-primary">Button 3</button>
-                        <button class="btn btn-primary">Button 4</button>
-                        <button class="btn btn-primary">Button 5</button>
+                        <button class="btn btn-primary">Sort by Name</button>
+                        <button class="btn btn-primary">Sort by Type</button>
+                        <button class="btn btn-primary">Sort by Quantity</button>
+                        <button class="btn btn-primary">Sort by Date Stored</button>
+                        <button class="btn btn-primary">Sort by Expiration Date</button>
                     </div>
                 </div>
         
                 <!-- Scrollable Table -->
-                <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                <div class="table-responsive" style="max-height: 520px; overflow-y: auto;">
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th>Column 1</th>
-                                <th>Column 2</th>
-                                <th>Column 3</th>
-                                <th>Column 4</th>
-                                <th>Column 5</th>
-                                <th>Column 6</th>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Quantity</th>
+                                <th>Unit</th>
+                                <th>Date Stored</th>
+                                <th>Expiration Date</th>
                             </tr>
                         </thead>
                         <tbody>

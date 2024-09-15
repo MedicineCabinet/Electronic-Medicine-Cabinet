@@ -75,6 +75,11 @@ def logout():
 def inventory():
     return render_template('inventory.html')
 
+@app.route('/doorlogs')
+def doorlogs():
+    return render_template('doorlogs.html')
+
+
 @app.route('/notification')
 def notification():
     return render_template('notification.html')

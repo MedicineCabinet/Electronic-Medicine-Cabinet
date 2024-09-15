@@ -12,14 +12,21 @@
     <div class="container-fluid">
         <div class="row">
             <!-- Sidebar for large screens -->
-            <nav class="col-lg-2 d-none d-lg-block bg-success sidebar">
+            <nav class="col-lg-2 d-none d-lg-block sidebar">
                 <div class="sidebar-content">
-                    <h2 class="sidebar-title">Welcome, {{ user }}!</h2>
+
+                    <h2 class="sidebar-title">Barangay San Mateo Health Center Medicine Cabinet</h2>
                     <ul class="nav flex-column">
                         <li class="nav-item">
                             <a class="nav-link" id="inventory-link" href="javascript:void(0);" onclick="loadContent('inventory', 'inventory-link')">
                                 <i class='bx bx-box'></i>
                                 Inventory
+                            </a>
+                        </li> 
+                        <li class="nav-item">
+                            <a class="nav-link" id="doorlogs-link" href="javascript:void(0);" onclick="loadContent('doorlogs', 'doorlogs-link')">
+                                <i class='bx bx-door-open'></i>
+                                Door Logs
                             </a>
                         </li>
                         <li class="nav-item">
@@ -88,7 +95,7 @@
                             <i class='bx bx-menu navbar-toggler-icon'></i>
                         </button>
                     </div>
-                    <h1 class="h2 mb-0">Electronic Medicine Cabinet</h1>
+               
                 </header>
                 
                 <!-- Load the default content here -->

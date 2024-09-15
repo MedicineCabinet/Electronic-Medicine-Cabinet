@@ -1,7 +1,7 @@
 /* General sidebar and offcanvas styles */
 .sidebar, .offcanvas {
     height: 100vh;
-    background-color: #28a745;
+    background-color: rgb(66,167,245);
     padding: 10px;
     color: white;
     display: flex;
@@ -87,6 +87,10 @@ main {
     overflow-x: hidden;
 }
 
+.logo {
+    scale: 0.5;
+}
+
 /* Highlight active link for both sidebars */
 .nav-link.active {
     color: black;
@@ -97,7 +101,7 @@ main {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #28a745;
+    background-color: rgba(66,167,245);
     margin-bottom: 10px;
 }
 

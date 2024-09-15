@@ -9,7 +9,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: url('/static/bg.jpg') no-repeat;
+    background: rgb(66,167,245);
     background-size: cover;
     background-position: center;
     margin: 0;
