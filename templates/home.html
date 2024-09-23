@@ -15,7 +15,11 @@
             <nav class="col-lg-2 d-none d-lg-block sidebar">
                 <div class="sidebar-content">
 
-                    <h2 class="sidebar-title">Barangay San Mateo Health Center Medicine Cabinet</h2>
+                    <div class="sidebar-header d-flex align-items-center">
+                        <img src="{{ url_for('static', filename='SanMateoLogo.png') }}" alt="Barangay San Mateo Logo" class="sidebar-logo">
+                        <h2 class="sidebar-title ms-3">Barangay San Mateo Health Center Medicine Cabinet</h2>
+                    </div>
+            
                     <ul class="nav flex-column">
                         <li class="nav-item">
                             <a class="nav-link" id="inventory-link" href="javascript:void(0);" onclick="loadContent('inventory', 'inventory-link')">
@@ -88,16 +92,14 @@
             </div>
 
             <!-- Main content area -->
-            <main class="col-lg-10 ms-sm-auto col-lg-10 px-md-4">
-                <header class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <main class="col-lg-10 ms-sm-auto col-lg-10" style="padding-top: 0;"> <!-- Added inline padding-top: 0 -->
+                <header class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom" style="margin-bottom: 0;"> <!-- Removed pt-3 -->
                     <div class="d-lg-none">
                         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-controls="offcanvasSidebar">
                             <i class='bx bx-menu navbar-toggler-icon'></i>
                         </button>
                     </div>
-               
                 </header>
-                
                 <!-- Load the default content here -->
                 <div id="main-content">
                     {% include content %}

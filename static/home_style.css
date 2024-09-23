@@ -1,4 +1,6 @@
 /* General sidebar and offcanvas styles */
+
+
 .sidebar, .offcanvas {
     height: 100vh;
     background-color: rgb(66,167,245);
@@ -6,6 +8,7 @@
     color: white;
     display: flex;
     flex-direction: column;
+    width: 245px;
 }
 /* Sidebar and offcanvas title */
 .sidebar-title, .offcanvas-title {
@@ -27,7 +30,7 @@
 }
 /* Adjust icon size and prevent shrinking */
 .sidebar .nav-link i, .offcanvas-body .nav-link i {
-    margin-right: 10px;
+
     font-size: 1.5rem;
     flex-shrink: 0;
 }
@@ -149,4 +152,38 @@ main {
     }
 }
 
+
+/* logo*/
+/* Style for sidebar header with logo */
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/* Style for the logo image */
+.sidebar-logo {
+    width: 100px;
+    height: auto;
+    border-radius: 50%; /* Optional: Makes the logo circular */
+}
+
+/* Adjust the title to align next to the logo */
+.sidebar-title {
+    font-size: 1.2rem;
+    color: white;
+    margin-left: 10px;
+    line-height: 1.2;
+}
+
+/* Ensure everything fits well for smaller screens */
+@media (max-width: 768px) {
+    .sidebar-logo {
+        width: 40px;
+    }
+
+    .sidebar-title {
+        font-size: 1rem;
+    }
+}
 

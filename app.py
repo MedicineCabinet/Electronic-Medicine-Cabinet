@@ -52,7 +52,7 @@ def home():
     if 'user' in session:
         last_activity = session.get('last_activity')
         now = datetime.datetime.now()
-        if last_activity and (now - last_activity).total_seconds() > 60:  # 1 minute of inactivity
+        if last_activity and (now - last_activity).total_seconds() > 3600:  # 1 hour of inactivity
             flash('You have been automatically logged out due to inactivity', 'warning')
             return redirect(url_for('logout'))
         return render_template('home.html', user=session['user'], content='inventory.html')
