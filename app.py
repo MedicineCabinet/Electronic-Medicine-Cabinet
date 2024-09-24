@@ -11,7 +11,7 @@ users = {"username123": "password123"}
 @app.before_request
 def session_management():
     session.permanent = True
-    app.permanent_session_lifetime = datetime.timedelta(minutes=1)  # Set the session timeout (e.g., 1 minute)
+    app.permanent_session_lifetime = datetime.timedelta(minutes=10)  # Set the session timeout (e.g., 1 minute)
     session.modified = True
 
     if 'user' in session:

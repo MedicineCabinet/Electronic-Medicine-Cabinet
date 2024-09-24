@@ -1,6 +1,6 @@
 // static/idleLogout.js
 
-const IDLE_TIMEOUT = 60; // Idle time in seconds (1 minute)
+const IDLE_TIMEOUT = 600; // Idle time in seconds (1 minute)
 let idleTime = 0;
 
 const timerIncrement = () => {
