@@ -1,5 +1,13 @@
 from flask import Flask, render_template, redirect, url_for, request, session, flash, make_response
 import datetime
+import mysql.connector
+
+conn = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="", 
+    database="db_medicine_cabinet"
+)
 
 app = Flask(__name__)
 app.secret_key = '8d63cfa786bdee8fb79dbad79110d5c1'
@@ -16,6 +24,8 @@ def session_management():
 
     if 'user' in session:
         session['last_activity'] = datetime.datetime.now()
+
+
 
 #Routing for the Login page
 @app.route('/', methods=['GET', 'POST'])
@@ -73,7 +83,43 @@ def logout():
 
 @app.route('/inventory')
 def inventory():
-    return render_template('inventory.html')
+    search_term = request.args.get('search', '').lower()
+
+    # Fetch data from the database
+    cursor = conn.cursor(dictionary=True)  # Use dictionary=True to get results as dictionaries
+    try:
+        cursor.execute("SELECT name, type, quantity, unit, date_stored, expiration_date FROM medicine_inventory")
+        # Get all inventory items from the database
+        inventory_items = cursor.fetchall()
+
+        # Filter inventory based on search term
+        if search_term:
+            filtered_items = [
+                item for item in inventory_items if (
+                    search_term in item["name"].lower() or
+                    search_term in item["type"].lower() or
+                    search_term in str(item["quantity"]) or
+                    search_term in item["date_stored"].isoformat().lower() or
+                    search_term in item["expiration_date"].isoformat().lower()
+                )
+            ]
+        else:
+            filtered_items = inventory_items
+
+    except Exception as e:
+        # Handle exceptions such as database errors
+        filtered_items = []
+        print(f"Database error: {e}")  # Log the error (or use a logger)
+    finally:
+        cursor.close()
+
+    # Check if the request is via AJAX
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        return render_template('inventory_table_rows.html', inventory_items=filtered_items)
+
+    # Render the full page if not AJAX
+    return render_template('inventory.html', inventory_items=filtered_items)
+
 
 @app.route('/doorlogs')
 def doorlogs():

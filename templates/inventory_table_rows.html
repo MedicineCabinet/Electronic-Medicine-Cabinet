@@ -1,0 +1,14 @@
+{% for item in inventory_items %}
+<tr>
+    <td>{{ item.name }}</td>
+    <td>{{ item.type }}</td>
+    <td>{{ item.quantity }}</td>
+    <td>{{ item.unit }}</td>
+    <td>{{ item.date_stored }}</td>
+    <td>{{ item.expiration_date }}</td>
+</tr>
+{% else %}
+<tr>
+    <td colspan="6">No results found</td>
+</tr>
+{% endfor %}

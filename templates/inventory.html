@@ -10,18 +10,21 @@
     <style>
         /* Set a fixed height for the table's container */
         .table-container {
-            max-height: 500px;
+            height: 200px;
             overflow-y: auto;
 
+
         }
+
+
 
         /* Button container styles */
         .button-container {
             display: flex;
             justify-content: flex-end;
             flex-wrap: wrap;
-            margin-bottom: 20px;
-            margin-top: 30px;
+            margin-top: 20px;
+
         }
 
         .button-container .btn {
@@ -67,10 +70,18 @@
                 <!-- Search Bar and Buttons Above Table -->
                 <div class="inventory-header d-flex justify-content-between align-items-center mb-3">
                     <div class="search-bar mt-4">
-                        <i class='bx bx-search'></i>
-                        <input type="text" placeholder="Search here" class="form-control">
+                        <form method="GET" action="{{ url_for('inventory') }}" class="d-flex" onsubmit="searchInventory(event)">
+                            <input type="text" name="search" placeholder="Search here" class="form-control" style="margin: 10px 0 0 10px;">
+                            <button type="submit" class="btn" style="margin: 10px 0 0 -40px; background-color: transparent; color: black; border: none;">
+                                <span class='bx bx-search' style="color: black;"></span>
+                            </button>
+                            
+                        </form>
                     </div>
                     
+                            
+
+
                     <div class="button-group">
                         <button class="btn btn-primary">Sort by Name</button>
                         <button class="btn btn-primary">Sort by Type</button>
@@ -81,7 +92,7 @@
                 </div>
         
                 <!-- Scrollable Table -->
-                <div class="table-responsive" style="max-height: 520px; overflow-y: auto;">
+                <div class="table-responsive" style="max-height: 720px; overflow-y: auto;">
                     <table class="table table-striped">
                         <thead>
                             <tr>
@@ -93,167 +104,8 @@
                                 <th>Expiration Date</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>Paracetamol</td>
-                                <td>Tablet</td>
-                                <td>100</td>
-                                <td>mg</td>
-                                <td>2025-12-31</td>
-                                <td>2024-01-01</td>
-                            </tr>
-                            <tr>
-                                <td>Amoxicillin</td>
-                                <td>Capsule</td>
-                                <td>50</td>
-                                <td>mg</td>
-                                <td>2025-12-31</td>
-                                <td>2024-01-01</td>
-                            </tr>
-                            <tr>
-                                <td>Aspirin</td>
-                                <td>Tablet</td>
-                                <td>200</td>
-                                <td>mg</td>
-                                <td>2024-12-31</td>
-                                <td>2023-12-01</td>
-                            </tr>
-                            <tr>
-                                <td>Ibuprofen</td>
-                                <td>Tablet</td>
-                                <td>150</td>
-                                <td>mg</td>
-                                <td>2025-06-30</td>
-                                <td>2023-11-01</td>
-                            </tr>
-                            <tr>
-                                <td>Ciprofloxacin</td>
-                                <td>Tablet</td>
-                                <td>80</td>
-                                <td>mg</td>
-                                <td>2026-02-28</td>
-                                <td>2024-03-01</td>
-                            </tr>
-                            <tr>
-                                <td>Metformin</td>
-                                <td>Tablet</td>
-                                <td>100</td>
-                                <td>mg</td>
-                                <td>2026-08-31</td>
-                                <td>2024-05-15</td>
-                            </tr>
-                            <tr>
-                                <td>Atorvastatin</td>
-                                <td>Tablet</td>
-                                <td>90</td>
-                                <td>mg</td>
-                                <td>2025-11-30</td>
-                                <td>2024-02-15</td>
-                            </tr>
-                            <tr>
-                                <td>Lisinopril</td>
-                                <td>Tablet</td>
-                                <td>110</td>
-                                <td>mg</td>
-                                <td>2025-07-31</td>
-                                <td>2024-04-20</td>
-                            </tr>
-                            <tr>
-                                <td>Omeprazole</td>
-                                <td>Capsule</td>
-                                <td>60</td>
-                                <td>mg</td>
-                                <td>2026-03-31</td>
-                                <td>2024-06-10</td>
-                            </tr>
-                            <tr>
-                                <td>Metoprolol</td>
-                                <td>Tablet</td>
-                                <td>70</td>
-                                <td>mg</td>
-                                <td>2024-09-30</td>
-                                <td>2023-09-15</td>
-                            </tr>
-                            <tr>
-                                <td>Simvastatin</td>
-                                <td>Tablet</td>
-                                <td>120</td>
-                                <td>mg</td>
-                                <td>2025-04-30</td>
-                                <td>2024-01-20</td>
-                            </tr>
-                            <tr>
-                                <td>Losartan</td>
-                                <td>Tablet</td>
-                                <td>130</td>
-                                <td>mg</td>
-                                <td>2026-12-31</td>
-                                <td>2024-10-05</td>
-                            </tr>
-                            <tr>
-                                <td>Amlodipine</td>
-                                <td>Tablet</td>
-                                <td>140</td>
-                                <td>mg</td>
-                                <td>2024-11-30</td>
-                                <td>2023-11-01</td>
-                            </tr>
-                            <tr>
-                                <td>Levothyroxine</td>
-                                <td>Tablet</td>
-                                <td>60</td>
-                                <td>mg</td>
-                                <td>2026-01-31</td>
-                                <td>2024-03-15</td>
-                            </tr>
-                            <tr>
-                                <td>Warfarin</td>
-                                <td>Tablet</td>
-                                <td>75</td>
-                                <td>mg</td>
-                                <td>2025-05-31</td>
-                                <td>2024-08-20</td>
-                            </tr>
-                            <tr>
-                                <td>Clopidogrel</td>
-                                <td>Tablet</td>
-                                <td>80</td>
-                                <td>mg</td>
-                                <td>2026-04-30</td>
-                                <td>2024-07-05</td>
-                            </tr>
-                            <tr>
-                                <td>Alprazolam</td>
-                                <td>Tablet</td>
-                                <td>90</td>
-                                <td>mg</td>
-                                <td>2025-09-30</td>
-                                <td>2024-09-01</td>
-                            </tr>
-                            <tr>
-                                <td>Hydrochlorothiazide</td>
-                                <td>Tablet</td>
-                                <td>85</td>
-                                <td>mg</td>
-                                <td>2024-10-31</td>
-                                <td>2023-10-10</td>
-                            </tr>
-                            <tr>
-                                <td>Prednisone</td>
-                                <td>Tablet</td>
-                                <td>100</td>
-                                <td>mg</td>
-                                <td>2026-06-30</td>
-                                <td>2024-12-01</td>
-                            </tr>
-                            <tr>
-                                <td>Furosemide</td>
-                                <td>Tablet</td>
-                                <td>70</td>
-                                <td>mg</td>
-                                <td>2025-03-31</td>
-                                <td>2024-01-10</td>
-                            </tr>
+                        <tbody id="inventory-table-body">
+                            {% include 'inventory_table_rows.html' %}
                         </tbody>
                     </table>
                 </div>
@@ -272,6 +124,21 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        function searchInventory(event) {
+            event.preventDefault(); // Prevent the default form submission
+            const searchTerm = document.querySelector('input[name="search"]').value;
+
+            // Fetch search results
+            fetch(`/inventory?search=${searchTerm}`)
+                .then(response => response.text())
+                .then(html => { 
+                    // Load the new content into the table body
+                    document.getElementById('inventory-table-body').innerHTML = html;
+                })
+                .catch(error => console.error('Error searching inventory:', error));
+        }
+
+
         function refreshPage() {
             window.location.reload();
         }
