@@ -3,264 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="{{ url_for('static', filename='home_style.css') }}">
-<link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.1/css/boxicons.min.css" rel="stylesheet"> <!-- Boxicons -->
-<style>
-    /* Set a fixed height for the table's container */
-    .table-container {
-        max-height: 500px;
-        overflow-y: auto;
-        margin-bottom: 5px;
-        
-    }
-
-    /* Button container styles */
-    .button-container {
-        display: flex;
-        justify-content: flex-end;
-        flex-wrap: wrap;
-        margin-bottom: 20px;
-        margin-top: 30px;
-    }
-
-    .button-container .btn {
-        margin-left:10px;
-        margin-bottom: 10px;
-    }
-
-    /* Change background color and font color of active tab */
-    .nav-tabs .nav-link.active {
-        background-color: #28a745; /* Background color for the active tab */
-        color: white; /* Font color for the active tab */
-        border-color: #28a745; /* Optional: match the border color with the background */
-    }
-
-    /* Change font color of inactive tabs */
-    .nav-tabs .nav-link {
-        color: black; /* Font color for inactive tabs */
-    }
-
-    /* Hover effect for inactive tabs */
-    .nav-tabs .nav-link:hover {
-        color: #0056b3;  /* Font color when hovering over inactive tabs */
-    }
-</style>
+    <title>Door Logs</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.1/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='doorlogs.css') }}">
 </head>
 <body>
-<div class="container mt-4">
+    <div>
+        <div class="tab-content" id="doorlogs-tabs">
+            <div class="tab-pane fade show active" id="doorlogs" role="tabpanel">
+                <div class="doorlogs-header d-flex justify-content-between align-items-center mb-3">
+                    <div class="search-bar mt-4">
+                        <form method="GET" action="{{ url_for('doorlogs') }}" class="d-flex" onsubmit="searchDoorlogs(event)">
+                            <input type="text" name="search" placeholder="Search here" class="form-control" style="margin: 10px 0 0 10px;">
+                            <button type="submit" class="btn" style="margin: 10px 0 0 -40px; background-color: transparent; color: black; border: none;">
+                                <span class='bx bx-search' style="color: black;"></span>
+                            </button>
+                        </form>
+                    </div>
 
+                    <div class="button-group">
+                        <button class="btn btn-primary" onclick="sortDoorlogsByUsername()">Sort by Username</button>
+                        <button class="btn btn-primary" onclick="sortDoorlogsByStatus()">Sort by Status</button>
+                        <button class="btn btn-primary" onclick="sortDoorlogsByTimeAccessed()">Sort by Time Accessed</button>
+                        <button class="btn btn-primary" onclick="sortDoorlogsByDateAccessed()">Sort by Date Accessed</button>
+                    </div>
+                </div>
 
-        
-            <!-- Search Bar and Buttons Above Table -->
-            <div class="inventory-header d-flex justify-content-between align-items-center mb-3">
-                <div class="search-bar mt-4">
-                    <i class='bx bx-search'></i>
-                    <input type="text" placeholder="Search here" class="form-control">
+                <div class="table-responsive" style="max-height: 800px; overflow-y: auto;">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Status</th>
+                                <th>Time Accessed</th>
+                                <th>Date Accessed</th>
+                            </tr>
+                        </thead>
+                        <tbody id="doorlogs-table-body">
+                            {% include 'doorlogs_table_rows.html' %}
+                        </tbody>
+                    </table>
                 </div>
-                
-                <div class="button-group">
-                    <button class="btn btn-primary">Sort by Name</button>
-                    <button class="btn btn-primary">Sort by Type</button>
-                    <button class="btn btn-primary">Sort by Quantity</button>
-                    <button class="btn btn-primary">Sort by Date Stored</button>
-                    <button class="btn btn-primary">Sort by Expiration Date</button>
+
+                <div class="button-container">
+                    <button class="btn btn-custom-blue" onclick="refreshDoor()"><i class='bx bx-refresh'></i> Refresh</button>
+                    <button class="btn btn-primary"><i class='bx bx-download'></i> Extract CSV</button>
                 </div>
-            </div>
-    
-            <!-- Scrollable Table -->
-            <div class="table-responsive" style="max-height: 520px; overflow-y: auto;">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Type</th>
-                            <th>Quantity</th>
-                            <th>Unit</th>
-                            <th>Date Stored</th>
-                            <th>Expiration Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Paracetamol</td>
-                            <td>Tablet</td>
-                            <td>100</td>
-                            <td>mg</td>
-                            <td>2025-12-31</td>
-                            <td>2024-01-01</td>
-                        </tr>
-                        <tr>
-                            <td>Amoxicillin</td>
-                            <td>Capsule</td>
-                            <td>50</td>
-                            <td>mg</td>
-                            <td>2025-12-31</td>
-                            <td>2024-01-01</td>
-                        </tr>
-                        <tr>
-                            <td>Aspirin</td>
-                            <td>Tablet</td>
-                            <td>200</td>
-                            <td>mg</td>
-                            <td>2024-12-31</td>
-                            <td>2023-12-01</td>
-                        </tr>
-                        <tr>
-                            <td>Ibuprofen</td>
-                            <td>Tablet</td>
-                            <td>150</td>
-                            <td>mg</td>
-                            <td>2025-06-30</td>
-                            <td>2023-11-01</td>
-                        </tr>
-                        <tr>
-                            <td>Ciprofloxacin</td>
-                            <td>Tablet</td>
-                            <td>80</td>
-                            <td>mg</td>
-                            <td>2026-02-28</td>
-                            <td>2024-03-01</td>
-                        </tr>
-                        <tr>
-                            <td>Metformin</td>
-                            <td>Tablet</td>
-                            <td>100</td>
-                            <td>mg</td>
-                            <td>2026-08-31</td>
-                            <td>2024-05-15</td>
-                        </tr>
-                        <tr>
-                            <td>Atorvastatin</td>
-                            <td>Tablet</td>
-                            <td>90</td>
-                            <td>mg</td>
-                            <td>2025-11-30</td>
-                            <td>2024-02-15</td>
-                        </tr>
-                        <tr>
-                            <td>Lisinopril</td>
-                            <td>Tablet</td>
-                            <td>110</td>
-                            <td>mg</td>
-                            <td>2025-07-31</td>
-                            <td>2024-04-20</td>
-                        </tr>
-                        <tr>
-                            <td>Omeprazole</td>
-                            <td>Capsule</td>
-                            <td>60</td>
-                            <td>mg</td>
-                            <td>2026-03-31</td>
-                            <td>2024-06-10</td>
-                        </tr>
-                        <tr>
-                            <td>Metoprolol</td>
-                            <td>Tablet</td>
-                            <td>70</td>
-                            <td>mg</td>
-                            <td>2024-09-30</td>
-                            <td>2023-09-15</td>
-                        </tr>
-                        <tr>
-                            <td>Simvastatin</td>
-                            <td>Tablet</td>
-                            <td>120</td>
-                            <td>mg</td>
-                            <td>2025-04-30</td>
-                            <td>2024-01-20</td>
-                        </tr>
-                        <tr>
-                            <td>Losartan</td>
-                            <td>Tablet</td>
-                            <td>130</td>
-                            <td>mg</td>
-                            <td>2026-12-31</td>
-                            <td>2024-10-05</td>
-                        </tr>
-                        <tr>
-                            <td>Amlodipine</td>
-                            <td>Tablet</td>
-                            <td>140</td>
-                            <td>mg</td>
-                            <td>2024-11-30</td>
-                            <td>2023-11-01</td>
-                        </tr>
-                        <tr>
-                            <td>Levothyroxine</td>
-                            <td>Tablet</td>
-                            <td>60</td>
-                            <td>mg</td>
-                            <td>2026-01-31</td>
-                            <td>2024-03-15</td>
-                        </tr>
-                        <tr>
-                            <td>Warfarin</td>
-                            <td>Tablet</td>
-                            <td>75</td>
-                            <td>mg</td>
-                            <td>2025-05-31</td>
-                            <td>2024-08-20</td>
-                        </tr>
-                        <tr>
-                            <td>Clopidogrel</td>
-                            <td>Tablet</td>
-                            <td>80</td>
-                            <td>mg</td>
-                            <td>2026-04-30</td>
-                            <td>2024-07-05</td>
-                        </tr>
-                        <tr>
-                            <td>Alprazolam</td>
-                            <td>Tablet</td>
-                            <td>90</td>
-                            <td>mg</td>
-                            <td>2025-09-30</td>
-                            <td>2024-09-01</td>
-                        </tr>
-                        <tr>
-                            <td>Hydrochlorothiazide</td>
-                            <td>Tablet</td>
-                            <td>85</td>
-                            <td>mg</td>
-                            <td>2024-10-31</td>
-                            <td>2023-10-10</td>
-                        </tr>
-                        <tr>
-                            <td>Prednisone</td>
-                            <td>Tablet</td>
-                            <td>100</td>
-                            <td>mg</td>
-                            <td>2026-06-30</td>
-                            <td>2024-12-01</td>
-                        </tr>
-                        <tr>
-                            <td>Furosemide</td>
-                            <td>Tablet</td>
-                            <td>70</td>
-                            <td>mg</td>
-                            <td>2025-03-31</td>
-                            <td>2024-01-10</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            <!-- Buttons Below Table -->
-            <div class="button-container">
-                <button class="btn btn-success"><i class='bx bx-refresh'></i> Refresh</button>
-                <button class="btn btn-primary"><i class='bx bx-download'></i> Extract CSV</button>
             </div>
         </div>
     </div>
-    
-    
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='doorlogs.js') }}"></script>
 </body>
-
-
 </html>

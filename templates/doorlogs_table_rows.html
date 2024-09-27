@@ -1,0 +1,12 @@
+{% for item in doorlogs_items %}
+<tr>
+    <td>{{ item.username }}</td>
+    <td>{{ item.status }}</td>
+    <td>{{ item.time_accessed }}</td>
+    <td>{{ item.date_accessed }}</td>
+</tr>
+{% else %}
+<tr>
+    <td colspan="4" class="text-center">No records found</td>  <!-- Message if no results -->
+</tr>
+{% endfor %}

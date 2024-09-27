@@ -70,6 +70,12 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" id="offcanvas-doorlogs-link" href="javascript:void(0);" onclick="loadContent('doorlogs', 'doorlogs-link', 'offcanvas-doorlogs-link')">
+                                <i class='bx bx-bell'></i>
+                                Doorlogs
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" id="offcanvas-notification-link" href="javascript:void(0);" onclick="loadContent('notification', 'notification-link', 'offcanvas-notification-link')">
                                 <i class='bx bx-bell'></i>
                                 Notification
@@ -82,8 +88,7 @@
                             </a>
                         </li>
                         <li class="nav-item sidebar-footer">
-                            <a class="nav-link 
-                            text-danger" href="{{ url_for('logout') }}">
+                            <a class="nav-link text-danger" href="{{ url_for('logout') }}">
                                 <i class='bx bx-log-out'></i>
                                 Logout
                             </a>
@@ -95,11 +100,11 @@
             <!-- Main content area -->
             <main class="col-lg-10 col-md-12" style="padding-top: 0;">
                 <div class="d-lg-none">
-                        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-controls="offcanvasSidebar">
-                            <i class='bx bx-menu navbar-toggler-icon'></i>
-                        </button>
-                    </div>
-                                    <!-- Load the default content here -->
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-controls="offcanvasSidebar">
+                        <i class='bx bx-menu navbar-toggler-icon'></i>
+                    </button>
+                </div>
+                <!-- Load the default content here -->
                 <div id="main-content">
                     {% include content %}
                 </div>
@@ -109,52 +114,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ url_for('static', filename='idleLogout.js') }}"></script>
-    <script>
-        function loadContent(section, sidebarLinkId, offcanvasLinkId) {
-            // Fetch the new content
-            fetch(`/${section}`)
-                .then(response => response.text())
-                .then(html => {
-                    // Load the new content into the main content area
-                    document.getElementById('main-content').innerHTML = html;
-
-                    // Remove the "active" class from all sidebar links
-                    const sidebarLinks = document.querySelectorAll('.sidebar .nav-link');
-                    sidebarLinks.forEach(link => link.classList.remove('active'));
-
-                    // Remove the "active" class from all offcanvas links
-                    const offcanvasLinks = document.querySelectorAll('.offcanvas-body .nav-link');
-                    offcanvasLinks.forEach(link => link.classList.remove('active'));
-
-                    // Add the "active" class to the clicked sidebar link
-                    if (sidebarLinkId) {
-                        document.getElementById(sidebarLinkId).classList.add('active');
-                    }
-
-                    // Add the "active" class to the clicked offcanvas link
-                    if (offcanvasLinkId) {
-                        document.getElementById(offcanvasLinkId).classList.add('active');
-                    }
-                })
-                .catch(error => console.error('Error loading content:', error));
-        }
-        // Automatically load Inventory when the page is first loaded
-        document.addEventListener("DOMContentLoaded", function() {
-            loadContent('inventory', 'inventory-link', 'offcanvas-inventory-link');
-        });
-        // Event Listener for Window Resize
-        function checkScreenSizeAndCloseOffcanvas() {
-            const offcanvasSidebar = document.getElementById('offcanvasSidebar');
-            const bsOffcanvas = bootstrap.Offcanvas.getInstance(offcanvasSidebar);
-            //Function when the screen is currently on smally
-            if (window.innerWidth >= 992) { // 992px is the breakpoint for lg (large screens)
-                if (bsOffcanvas && bsOffcanvas._isShown) {
-                    bsOffcanvas.hide(); // Close the offcanvas if it's shown
-                }
-            }
-        }
-        // Attach the resize event listener
-        window.addEventListener('resize', checkScreenSizeAndCloseOffcanvas);
-    </script>
+    <script src="{{ url_for('static', filename='home.js') }}"></script> <!-- Link to the external home.js -->
 </body>
 </html>

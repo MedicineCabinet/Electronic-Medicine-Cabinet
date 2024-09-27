@@ -5,69 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inventory</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='home_style.css') }}">
-    <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.1/css/boxicons.min.css" rel="stylesheet"> <!-- Boxicons -->
-    <style>
-        /* Set a fixed height for the table's container */
-        .table-container {
-            height: 200px;
-            overflow-y: auto;
-
-
-        }
-
-
-
-        /* Button container styles */
-        .button-container {
-            display: flex;
-            justify-content: flex-end;
-            flex-wrap: wrap;
-            margin-top: 20px;
-
-        }
-
-        .button-container .btn {
-            margin-left: 10px;
-            margin-bottom: 10px;
-        }
-
-        /* Change background color and font color of active tab */
-        .nav-tabs .nav-link.active {
-            background-color: rgba(66, 167, 245, 1); /* Background color for the active tab */
-            color: white; /* Font color for the active tab */
-            border-color:rgba(66, 167, 245, 1); /* Optional: match the border color with the background */
-        }
-
-        /* Change font color of inactive tabs */
-        .nav-tabs .nav-link {
-            color: black; /* Font color for inactive tabs */
-        }
-
-        /* Hover effect for inactive tabs */
-        .nav-tabs .nav-link:hover {
-            color: rgba(66,167,245);  /* Font color when hovering over inactive tabs */
-        }
-        .btn-custom-blue {
-    background-color: rgb(25, 139, 226); /* Set your desired blue color */
-    color: white; /* Text color */
-    border: none; /* Remove border */
-    transition: background-color 0.3s ease; /* Smooth transition */
-}
-
-.btn-custom-blue:hover {
-    background-color: rgba(66, 167, 245, 0.8); /* Change color on hover */
-}
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.1/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='inventory.css') }}"> <!-- Link to external CSS -->
 </head>
 <body>
     <div>
-
         <div class="tab-content" id="inventory-tabs">
-            <!-- Medicine Inventory Tab -->
-            <div class="tab-pane fade show active" id="medicine" role="tabpanel"> <!-- Changed ID to match tab button -->
-            
-                <!-- Search Bar and Buttons Above Table -->
+            <div class="tab-pane fade show active" id="medicine" role="tabpanel">
                 <div class="inventory-header d-flex justify-content-between align-items-center mb-3">
                     <div class="search-bar mt-4">
                         <form method="GET" action="{{ url_for('inventory') }}" class="d-flex" onsubmit="searchInventory(event)">
@@ -75,24 +19,19 @@
                             <button type="submit" class="btn" style="margin: 10px 0 0 -40px; background-color: transparent; color: black; border: none;">
                                 <span class='bx bx-search' style="color: black;"></span>
                             </button>
-                            
                         </form>
                     </div>
-                    
-                            
-
 
                     <div class="button-group">
-                        <button class="btn btn-primary">Sort by Name</button>
-                        <button class="btn btn-primary">Sort by Type</button>
-                        <button class="btn btn-primary">Sort by Quantity</button>
-                        <button class="btn btn-primary">Sort by Date Stored</button>
-                        <button class="btn btn-primary">Sort by Expiration Date</button>
+                        <button class="btn btn-primary" onclick="sortInventoryByName()">Sort by Name</button>
+                        <button class="btn btn-primary" onclick="sortInventoryByType()">Sort by Type</button>
+                        <button class="btn btn-primary" onclick="sortInventoryByQuantity()">Sort by Quantity</button>
+                        <button class="btn btn-primary" onclick="sortInventoryByDateStored()">Sort by Date Stored</button>
+                        <button class="btn btn-primary" onclick="sortInventoryByExpirationDate()">Sort by Expiration Date</button>
                     </div>
                 </div>
-        
-                <!-- Scrollable Table -->
-                <div class="table-responsive" style="max-height: 720px; overflow-y: auto;">
+
+                <div class="table-responsive" style="max-height: 800px; overflow-y: auto;">
                     <table class="table table-striped">
                         <thead>
                             <tr>
@@ -109,39 +48,16 @@
                         </tbody>
                     </table>
                 </div>
-                
-                <!-- Buttons Below Table -->
+
                 <div class="button-container">
                     <button class="btn btn-custom-blue" onclick="refreshPage()"><i class='bx bx-refresh'></i> Refresh</button>
-
                     <button class="btn btn-primary"><i class='bx bx-download'></i> Extract CSV</button>
                 </div>
             </div>
         </div>
-        
-        
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        function searchInventory(event) {
-            event.preventDefault(); // Prevent the default form submission
-            const searchTerm = document.querySelector('input[name="search"]').value;
-
-            // Fetch search results
-            fetch(`/inventory?search=${searchTerm}`)
-                .then(response => response.text())
-                .then(html => { 
-                    // Load the new content into the table body
-                    document.getElementById('inventory-table-body').innerHTML = html;
-                })
-                .catch(error => console.error('Error searching inventory:', error));
-        }
-
-
-        function refreshPage() {
-            window.location.reload();
-        }
-    </script>
+    <script src="{{ url_for('static', filename='inventory.js') }}"></script> <!-- Link to external JS -->
 </body>
 </html>
