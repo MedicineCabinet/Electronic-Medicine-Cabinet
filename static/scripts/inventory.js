@@ -63,6 +63,21 @@ function sortInventoryByQuantity() {
     .catch(error => console.error('Error sorting inventory by quantity:', error));
 }
 
+function sortInventoryByUnit() {
+    // Fetch the inventory sorted by type via AJAX
+    fetch(`/inventory?sort_by=unit`, {
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'  // Identify this as an AJAX request
+        }
+    })
+    .then(response => response.text())
+    .then(html => {
+        // Replace the table body with the sorted rows
+        document.getElementById('inventory-table-body').innerHTML = html;
+    })
+    .catch(error => console.error('Error sorting inventory by unit:', error));
+}
+
 function sortInventoryByDateStored() {
     // Fetch the inventory sorted by date stored in descending order via AJAX
     fetch(`/inventory?sort_by=date_stored&order=desc`, {

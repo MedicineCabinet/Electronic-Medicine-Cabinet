@@ -83,85 +83,99 @@ def logout():
 
 @app.route('/inventory')
 def inventory():
-    search_term = request.args.get('search', '').lower()
-    sort_by = request.args.get('sort_by', 'name')  # Default to sorting by name
-    order = request.args.get('order', 'asc')  # Default to ascending order
+            search_term = request.args.get('search', '').lower()
+            sort_by = request.args.get('sort_by', 'name')  # Default to sorting by name
+            order = request.args.get('order', 'asc')  # Default to ascending order
 
-    # Ensure that only valid column names are used for sorting
-    valid_sort_columns = ['name', 'type', 'quantity', 'date_stored', 'expiration_date']
-    if sort_by not in valid_sort_columns:
-        sort_by = 'name'  # Default to sorting by name if an invalid column is provided
+            # Ensure that only valid column names are used for sorting
+            valid_sort_columns = ['name', 'type', 'quantity', 'unit', 'date_stored', 'expiration_date']
+            if sort_by not in valid_sort_columns:
+                sort_by = 'name'  # Default to sorting by name if an invalid column is provided
 
-    # Use SQL-specific handling for numeric sorting when sorting by quantity
-    sort_column = 'CAST(quantity AS UNSIGNED)' if sort_by == 'quantity' else sort_by
+            # Use SQL-specific handling for numeric sorting when sorting by quantity
+            sort_column = 'CAST(quantity AS UNSIGNED)' if sort_by == 'quantity' else sort_by
 
-    # Set the sort order (asc or desc)
-    sort_order = 'ASC' if order == 'asc' else 'DESC'
+            # Set the sort order (asc or desc)
+            sort_order = 'ASC' if order == 'asc' else 'DESC'
 
-    # Fetch data from the database
-    cursor = conn.cursor(dictionary=True)
-    try:
-        # Modify query to include sorting
-        query = f"SELECT name, type, quantity, unit, date_stored, expiration_date FROM medicine_inventory ORDER BY {sort_column} {sort_order}"
-        cursor.execute(query)
-        inventory_items = cursor.fetchall()
+            # Fetch data from the database
+            cursor = conn.cursor(dictionary=True)
+            try:
+                # Modify query to include sorting
+                query = f"SELECT name, type, quantity, unit, date_stored, expiration_date FROM medicine_inventory ORDER BY {sort_column} {sort_order}"
+                cursor.execute(query)
+                inventory_items = cursor.fetchall()
 
-        # Filter inventory based on search term if applicable
-        if search_term:
-            filtered_items = [
-                item for item in inventory_items if (
-                    search_term in item["name"].lower() or
-                    search_term in item["type"].lower() or
-                    search_term in str(item["quantity"]) or
-                    search_term in item["date_stored"].isoformat().lower() or
-                    search_term in item["expiration_date"].isoformat().lower()
-                )
-            ]
-        else:
-            filtered_items = inventory_items
+                # Filter inventory based on search term if applicable
+                if search_term:
+                    filtered_items = [
+                        item for item in inventory_items if (
+                            search_term in item["name"].lower() or
+                            search_term in item["type"].lower() or
+                            search_term in str(item["quantity"]) or
+                            search_term in item["unit"].lower() or
+                            search_term in item["date_stored"].isoformat().lower() or
+                            search_term in item["expiration_date"].isoformat().lower()
+                        )
+                    ]
+                else:
+                    filtered_items = inventory_items
 
-    except Exception as e:
-        filtered_items = []
-        print(f"Database error: {e}")  # Log the error
-    finally:
-        cursor.close()
+            except Exception as e:
+                filtered_items = []
+                print(f"Database error: {e}")  # Log the error
+            finally:
+                cursor.close()
 
-    # If it's an AJAX request, return only the table rows
-    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-        return render_template('inventory_table_rows.html', inventory_items=filtered_items)
+            # If it's an AJAX request, return only the table rows
+            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                return render_template('inventory_table_rows.html', inventory_items=filtered_items)
 
-    # Render full page otherwise
-    return render_template('inventory.html', inventory_items=filtered_items)
+            # Render full page otherwise
+            return render_template('inventory.html', inventory_items=filtered_items)       
 
 @app.route('/doorlogs')
 def doorlogs():
+    search_term = request.args.get('search', '').lower()
+    sort_by = request.args.get('sort_by', 'username')  # Default to sorting by time
+    order = request.args.get('order', 'asc')  # Default to ascending order
+
+    valid_sort_columns = ['username', 'accountType', 'position', 'date', 'time', 'action_taken']
+    if sort_by not in valid_sort_columns:
+        sort_by = 'username'  # Default to sorting by time
+
+    sort_order = 'ASC' if order == 'asc' else 'DESC'
+
     cursor = conn.cursor(dictionary=True)
-    search_query = request.args.get('search', '')
-
     try:
-        # Query to get door logs
-        query = "SELECT * FROM door_logs"
-        if search_query:
-            query += " WHERE username LIKE %s OR status LIKE %s"
-            cursor.execute(query, (f'%{search_query}%', f'%{search_query}%'))
-        else:
-            cursor.execute(query)
+        query = f"SELECT username, accountType, position, date, time, action_taken FROM door_logs ORDER BY {sort_by} {sort_order}"
+        cursor.execute(query)
+        door_logs = cursor.fetchall()
 
-        doorlogs_items = cursor.fetchall()
-        print(f"Fetched Items: {doorlogs_items}")  # Debugging
+        if search_term:
+            filtered_logs = [
+                log for log in door_logs if (
+                    search_term in log["username"].lower() or
+                    search_term in log["accountType"].lower() or
+                    search_term in log["position"].lower() or
+                    search_term in log["date"].isoformat().lower() or
+                    search_term in log["time"].isoformat().lower() or
+                    search_term in log["action_taken"].lower() 
+                )
+            ]
+        else:
+            filtered_logs = door_logs
 
     except Exception as e:
-        doorlogs_items = []
+        filtered_logs = []
         print(f"Database error: {e}")
     finally:
-        cursor.close()  # Ensure cursor is closed
+        cursor.close()
 
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-        return render_template('doorlogs_table_rows.html', doorlogs_items=doorlogs_items)  # Return only rows for AJAX
+        return render_template('doorlogs_table_rows.html', door_logs=filtered_logs)
 
-    return render_template('doorlogs.html', doorlogs_items=doorlogs_items)  # Return full page
-
-
+    return render_template('doorlogs.html', door_logs=filtered_logs)
 
 
 @app.route('/notification')
