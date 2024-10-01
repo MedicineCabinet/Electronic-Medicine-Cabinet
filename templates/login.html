@@ -39,28 +39,38 @@
             </form>
         </div>
     </div>
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-          const urlParams = new URLSearchParams(window.location.search);
-          if (urlParams.get('idle') === 'true') {
-              alert('You have been automatically logged out due to inactivity.');
-              // Remove the 'idle' parameter from the URL without reloading the page
-              urlParams.delete('idle');
-              const newUrl = window.location.pathname + '?' + urlParams.toString();
-              window.history.replaceState({}, document.title, newUrl);
-          }
-      });
-      const togglePassword = document.querySelector('#togglePassword');
-      const password = document.querySelector('#password');
 
-      togglePassword.addEventListener('click', function () {
-          // Toggle the type attribute
-          const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-          password.setAttribute('type', type);
-          
-          // Toggle the eye icon
-          this.classList.toggle('bx-show');
-      });
-  </script>
+    <!-- Add audio element -->
+    <audio id="errorSound" src="{{ url_for('static', filename='sounds/error.mp3') }}"></audio>
+
+    <script>
+        // Play error sound if flash message is 'danger'
+        document.addEventListener('DOMContentLoaded', function () {
+            const errorAlert = document.querySelector('.alert-danger');
+            if (errorAlert) {
+                const errorSound = document.getElementById('errorSound');
+                errorSound.play();
+            }
+
+            // Handle idle logout alert
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('idle') === 'true') {
+                alert('You have been automatically logged out due to inactivity.');
+                urlParams.delete('idle');
+                const newUrl = window.location.pathname + '?' + urlParams.toString();
+                window.history.replaceState({}, document.title, newUrl);
+            }
+        });
+
+        // Toggle password visibility
+        const togglePassword = document.querySelector('#togglePassword');
+        const password = document.querySelector('input[name="password"]');
+
+        togglePassword.addEventListener('click', function () {
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            this.classList.toggle('bx-show');
+        });
+    </script>
 </body>
 </html>
