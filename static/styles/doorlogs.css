@@ -17,6 +17,10 @@
     margin-bottom: 10px;
 }
 
+.button-group {
+    padding: 20px;
+}
+
 /* Change background color and font color of active tab */
 .nav-tabs .nav-link.active {
     background-color: rgba(66, 167, 245, 1);

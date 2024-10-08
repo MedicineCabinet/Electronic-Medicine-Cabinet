@@ -1,4 +1,4 @@
-function searchDoorLogs(event) {
+function searchDoorlogs(event) {
     event.preventDefault(); // Prevent the default form submission
     const searchTerm = document.querySelector('input[name="search"]').value;
 
@@ -13,12 +13,14 @@ function searchDoorLogs(event) {
         // Replace the table body with the new rows
         document.getElementById('doorlogs-table-body').innerHTML = html;
     })
-    .catch(error => console.error('Error searching door logs:', error));
+    .catch(error => console.error('Error searching doorlogs:', error));
 }
 
-function refreshDoor() {
+function refreshPage() {
     window.location.reload();
 }
+
+
 
 function sortDoorLogsByUsername() {
     fetch(`/doorlogs?sort_by=username`, {

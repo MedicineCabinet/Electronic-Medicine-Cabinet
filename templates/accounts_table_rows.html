@@ -1,0 +1,11 @@
+{% for log in users %}
+<tr>
+    <td>{{ log.username }}</td>
+    <td>{{ log.position }}</td>
+    <td>{{ log.accountType }}</td>
+</tr>
+{% else %}
+<tr>
+    <td colspan="3">No logs found</td>
+</tr>
+{% endfor %}

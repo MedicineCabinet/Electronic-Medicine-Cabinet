@@ -1,3 +1,8 @@
+.body {
+    margin: 0px;
+    padding: 0px;
+}
+
 /* Set a fixed height for the table's container */
 .table-container {
     height: 200px;
@@ -15,6 +20,10 @@
 .button-container .btn {
     margin-left: 10px;
     margin-bottom: 10px;
+}
+
+.button-group {
+    padding: 20px;
 }
 
 /* Change background color and font color of active tab */
