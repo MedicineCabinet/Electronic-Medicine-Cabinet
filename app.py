@@ -144,26 +144,24 @@ def inventory():
 @app.route('/doorlogs')
 def doorlogs():
     search_term = request.args.get('search', '').lower()
-    sort_by = request.args.get('sort_by', 'username')  # Default to sorting by username
-    order = request.args.get('order', 'asc')  # Default to ascending order
-
-    valid_sort_columns = ['username', 'accountType', 'position', 'date', 'time', 'action_taken']
-    if sort_by not in valid_sort_columns:
-        sort_by = 'username'  # Default to sorting by username
-
-    sort_order = 'ASC' if order == 'asc' else 'DESC'
+    sort_by = request.args.get('sort_by', 'username')  # Default sort column
 
     cursor = conn.cursor(dictionary=True)
     try:
         # Base query
-        query = f"SELECT username, accountType, position, date, time, action_taken FROM door_logs"
+        query = "SELECT username, accountType, position, date, time, action_taken FROM door_logs"
+        
         if search_term:
-            query += f" WHERE username LIKE %s OR accountType LIKE %s OR position LIKE %s OR date LIKE %s OR time LIKE %s OR action_taken LIKE %s"
+            query += " WHERE username LIKE %s OR accountType LIKE %s OR position LIKE %s OR date LIKE %s OR time LIKE %s OR action_taken LIKE %s"
             like_term = f"%{search_term}%"
             cursor.execute(query, (like_term, like_term, like_term, like_term, like_term, like_term))
         else:
             cursor.execute(query)
-        
+
+        # Sort results based on sort_by parameter
+        if sort_by in ['username', 'accountType', 'position', 'date', 'time', 'action_taken']:
+            query += f" ORDER BY {sort_by}"
+
         door_logs = cursor.fetchall()
 
     except Exception as e:

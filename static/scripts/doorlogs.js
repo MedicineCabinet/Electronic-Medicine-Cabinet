@@ -16,86 +16,58 @@ function searchDoorlogs(event) {
     .catch(error => console.error('Error searching doorlogs:', error));
 }
 
-function refreshPage() {
-    window.location.reload();
+function refresh() {
+    window.location.href = '/doorlogs'; // Redirect to the door logs page without any query parameters
 }
-
-
-
 function sortDoorLogsByUsername() {
-    fetch(`/doorlogs?sort_by=username`, {
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest'
-        }
-    })
-    .then(response => response.text())
-    .then(html => {
-        document.getElementById('doorlogs-table-body').innerHTML = html;
-    })
-    .catch(error => console.error('Error sorting door logs by username:', error));
+    sortTable('username');
 }
 
 function sortDoorLogsByAccountType() {
-    fetch(`/doorlogs?sort_by=accountType`, {
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest'
-        }
-    })
-    .then(response => response.text())
-    .then(html => {
-        document.getElementById('doorlogs-table-body').innerHTML = html;
-    })
-    .catch(error => console.error('Error sorting door logs by account type:', error));
+    sortTable('accountType');
 }
 
 function sortDoorLogsByPosition() {
-    fetch(`/doorlogs?sort_by=position`, {
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest'
-        }
-    })
-    .then(response => response.text())
-    .then(html => {
-        document.getElementById('doorlogs-table-body').innerHTML = html;
-    })
-    .catch(error => console.error('Error sorting door logs by position:', error));
+    sortTable('position');
 }
 
 function sortDoorLogsByDate() {
-    fetch(`/doorlogs?sort_by=date&order=desc`, {
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest'
-        }
-    })
-    .then(response => response.text())
-    .then(html => {
-        document.getElementById('doorlogs-table-body').innerHTML = html;
-    })
-    .catch(error => console.error('Error sorting door logs by date:', error));
+    sortTable('date');
 }
 
 function sortDoorLogsByTime() {
-    fetch(`/doorlogs?sort_by=time&order=desc`, {
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest'
-        }
-    })
-    .then(response => response.text())
-    .then(html => {
-        document.getElementById('doorlogs-table-body').innerHTML = html;
-    })
-    .catch(error => console.error('Error sorting door logs by time:', error));
+    sortTable('time');
 }
 
 function sortDoorLogsByActionTaken() {
-    fetch(`/doorlogs?sort_by=action_taken`, {
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest'
-        }
-    })
-    .then(response => response.text())
-    .then(html => {
-        document.getElementById('doorlogs-table-body').innerHTML = html;
-    })
-    .catch(error => console.error('Error sorting door logs by action taken:', error));
+    sortTable('action_taken');
 }
+
+function sortTable(column) {
+    const table = document.getElementById('doorlogs-table-body');
+    const rows = Array.from(table.rows);
+
+    // Determine sort order (ascending or descending)
+    const isAscending = table.getAttribute('data-sort') !== column;
+    rows.sort((a, b) => {
+        const aValue = a.cells[getColumnIndex(column)].innerText;
+        const bValue = b.cells[getColumnIndex(column)].innerText;
+
+        return isAscending
+            ? aValue.localeCompare(bValue)
+            : bValue.localeCompare(aValue);
+    });
+
+    // Clear the table body and append sorted rows
+    table.innerHTML = '';
+    rows.forEach(row => table.appendChild(row));
+
+    // Update the sorting column
+    table.setAttribute('data-sort', isAscending ? column : '');
+}
+
+function getColumnIndex(column) {
+    const columns = ['username', 'accountType', 'position', 'date', 'time', 'action_taken'];
+    return columns.indexOf(column);
+}
+

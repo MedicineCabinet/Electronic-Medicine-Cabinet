@@ -1,10 +1,4 @@
 /* General sidebar and offcanvas styles */
-
-.body {
-    margin-left: 0px;
-    padding-left: 0px;
-}
-
 .sidebar, .offcanvas {
     height: 100vh;
     background-color: rgb(66,167,245);
