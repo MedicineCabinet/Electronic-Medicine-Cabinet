@@ -179,19 +179,32 @@ def doorlogs():
 
 @app.route('/notification')
 def notification():
-    return render_template('notification.html')
+    cursor = conn.cursor(dictionary=True)
+    try:
+        query = "SELECT medicine_name, expiration_date, notification_date, days_until_expiration FROM notification_logs"
+        cursor.execute(query)
+        notification_logs = cursor.fetchall()
+    except Exception as e:
+        notification_logs = []
+        print(f"Database error: {e}")
+    finally:
+        cursor.close()
+
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        return render_template('notification_table_rows.html', notification_logs=notification_logs)
+    return render_template('notification.html', notification_logs=notification_logs)
+
+
+
+
 
 @app.route('/accounts')
 def accounts():
     cursor = conn.cursor(dictionary=True)
     try:
-        # Base query
-        query = f"SELECT username, position, accountType FROM users"
-        
+        query = "SELECT username, position, accountType FROM users"
         cursor.execute(query)
-        
         users = cursor.fetchall()
-
     except Exception as e:
         users = []
         print(f"Database error: {e}")
@@ -200,10 +213,7 @@ def accounts():
 
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         return render_template('accounts_table_rows.html', users=users)
-
     return render_template('accounts.html', users=users)
-
-
 
 if __name__ == '__main__':
     app.run(debug=True)

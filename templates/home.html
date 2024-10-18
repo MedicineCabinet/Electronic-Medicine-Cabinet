@@ -14,39 +14,49 @@
             <!-- Sidebar for large screens -->
             <nav class="col-lg-2 d-none d-lg-block sidebar">
                 <div class="sidebar-content">
-
                     <div class="sidebar-header d-flex align-items-center">
-                        <img src="{{ url_for('static', filename='images/SanMateoLogo.png') }}" alt="Barangay San Mateo Logo" class="sidebar-logo">
-                        <h2 class="sidebar-title ms-3">Barangay San Mateo Health Center Medicine Cabinet</h2>
+                        <img src="{{ url_for('static', filename='images/SanMateoLogo.png') }}" alt="Barangay San Mateo Logo" class="sidebar-logo" style="width: 100px; height: auto; margin-top: -80px;">
+                        <h2 class="sidebar-title ms-3" style="font-size: 1.7rem; padding: 2px 2px;">
+                            Barangay San Mateo Health Center Medicine Cabinet
+                        </h2>
                     </div>
             
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link" id="inventory-link" href="javascript:void(0);" onclick="loadContent('inventory', 'inventory-link')">
+                            <a class="nav-link" id="inventory-link" href="javascript:void(0);" 
+                               style="font-size: 2rem; padding: 20px 20px;" 
+                               onclick="loadContent('inventory', 'inventory-link')">
                                 <i class='bx bx-box'></i>
                                 Inventory
                             </a>
                         </li> 
                         <li class="nav-item">
-                            <a class="nav-link" id="doorlogs-link" href="javascript:void(0);" onclick="loadContent('doorlogs', 'doorlogs-link')">
+                            <a class="nav-link" id="doorlogs-link" href="javascript:void(0);" 
+                               style="font-size: 2rem; padding: 20px 20px;" 
+                               onclick="loadContent('doorlogs', 'doorlogs-link')">
                                 <i class='bx bx-door-open'></i>
                                 Door Logs
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="notification-link" href="javascript:void(0);" onclick="loadContent('notification', 'notification-link')">
+                            <a class="nav-link" id="notification-link" href="javascript:void(0);" 
+                               style="font-size: 2rem; padding: 20px 20px;" 
+                               onclick="loadContent('notification', 'notification-link')">
                                 <i class='bx bx-bell'></i>
                                 Notification
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="accounts-link" href="javascript:void(0);" onclick="loadContent('accounts', 'accounts-link')">
+                            <a class="nav-link" id="accounts-link" href="javascript:void(0);" 
+                               style="font-size: 2rem; padding: 20px 20px;" 
+                               onclick="loadContent('accounts', 'accounts-link')">
                                 <i class='bx bx-cog'></i>
                                 Accounts
                             </a>
                         </li>
                         <li class="nav-item sidebar-footer">
-                            <a class="nav-link text-danger" href="{{ url_for('logout') }}">
+                            <a class="nav-link text-danger" href="{{ url_for('logout') }}" 
+                               style="font-size: 2rem; padding: 20px 20px;">
                                 <i class='bx bx-log-out'></i>
                                 Logout
                             </a>
@@ -55,47 +65,61 @@
                 </div>
             </nav>
 
-            <!-- Offcanvas Sidebar for medium and smaller screens -->
-            <div class="offcanvas offcanvas-start d-md-none" tabindex="-1" id="offcanvasSidebar" aria-labelledby="offcanvasSidebarLabel">
-                <div class="offcanvas-header">
-                    <h5 class="offcanvas-title" id="offcanvasSidebarLabel">Welcome, {{ user }}!</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                </div>
-                <div class="offcanvas-body">
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link" id="offcanvas-inventory-link" href="javascript:void(0);" onclick="loadContent('inventory', 'inventory-link', 'offcanvas-inventory-link')">
-                                <i class='bx bx-box'></i>
-                                Inventory
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="offcanvas-doorlogs-link" href="javascript:void(0);" onclick="loadContent('doorlogs', 'doorlogs-link', 'offcanvas-doorlogs-link')">
-                                <i class='bx bx-bell'></i>
-                                Doorlogs
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="offcanvas-notification-link" href="javascript:void(0);" onclick="loadContent('notification', 'notification-link', 'offcanvas-notification-link')">
-                                <i class='bx bx-bell'></i>
-                                Notification
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="offcanvas-accounts-link" href="javascript:void(0);" onclick="loadContent('accounts', 'accounts-link', 'offcanvas-accounts-link')">
-                                <i class='bx bx-cog'></i>
-                                Accounts
-                            </a>
-                        </li>
-                        <li class="nav-item sidebar-footer">
-                            <a class="nav-link text-danger" href="{{ url_for('logout') }}">
-                                <i class='bx bx-log-out'></i>
-                                Logout
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+<!-- Offcanvas Sidebar for medium and smaller screens -->
+<div class="offcanvas offcanvas-start d-md-none" tabindex="-1" id="offcanvasSidebar" aria-labelledby="offcanvasSidebarLabel" style="background-color: rgb(66,167,245); color: white;">
+    <div class="offcanvas-header">
+        <img src="{{ url_for('static', filename='images/SanMateoLogo.png') }}" alt="Barangay San Mateo Logo" class="sidebar-logo" style="width: 100px; height: auto;">
+        <h5 class="offcanvas-title" id="offcanvasSidebarLabel" style="font-size: 1.5rem; padding: 2px 20px;">
+            Barangay San Mateo Health Center Medicine Cabinet
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    
+    <div class="offcanvas-body">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" id="offcanvas-inventory-link" href="javascript:void(0);" 
+                   style="font-size: 1.5rem; padding: 20px 20px; color: black;" 
+                   onclick="loadContent('inventory', 'inventory-link', 'offcanvas-inventory-link')">
+                    <i class='bx bx-box'></i>
+                    Inventory
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="offcanvas-doorlogs-link" href="javascript:void(0);" 
+                   style="font-size: 1.5rem; padding: 20px 20px; color: black;" 
+                   onclick="loadContent('doorlogs', 'doorlogs-link', 'offcanvas-doorlogs-link')">
+                    <i class='bx bx-bell'></i>
+                    Doorlogs
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="offcanvas-notification-link" href="javascript:void(0);" 
+                   style="font-size: 1.5rem; padding: 20px 20px; color: black;" 
+                   onclick="loadContent('notification', 'notification-link', 'offcanvas-notification-link')">
+                    <i class='bx bx-bell'></i>
+                    Notification
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="offcanvas-accounts-link" href="javascript:void(0);" 
+                   style="font-size: 1.5rem; padding: 20px 20px; color: black;" 
+                   onclick="loadContent('accounts', 'accounts-link', 'offcanvas-accounts-link')">
+                    <i class='bx bx-cog'></i>
+                    Accounts
+                </a>
+            </li>
+            <li class="nav-item sidebar-footer">
+                <a class="nav-link text-danger" href="{{ url_for('logout') }}" 
+                   style="font-size: 1.5rem; padding: 2px 20px; color: black;">
+                    <i class='bx bx-log-out'></i>
+                    Logout
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
 
             <!-- Main content area -->
             <main class="col-lg-10 col-md-12" style="padding-top: 0;">

@@ -1,0 +1,12 @@
+{% for log in notification_logs %}
+<tr>
+    <td>{{ log.medicine_name }}</td>
+    <td>{{ log.expiration_date }}</td>
+    <td>{{ log.notification_date }}</td>
+    <td>{{ log.days_until_expiration }}</td>
+</tr>
+{% else %}
+<tr>
+    <td colspan="4">No results found</td>
+</tr>
+{% endfor %}

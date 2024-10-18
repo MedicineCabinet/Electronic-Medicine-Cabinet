@@ -1,4 +1,4 @@
-function searchDoorlogs(event) {
+function searchDoorLogs(event) {
     event.preventDefault(); // Prevent the default form submission
     const searchTerm = document.querySelector('input[name="search"]').value;
 
@@ -10,11 +10,12 @@ function searchDoorlogs(event) {
     })
     .then(response => response.text())
     .then(html => {
-        // Replace the table body with the new rows
+        // Replace the table body with the new rows for doorlogs
         document.getElementById('doorlogs-table-body').innerHTML = html;
     })
     .catch(error => console.error('Error searching doorlogs:', error));
 }
+
 
 function refresh() {
     window.location.href = '/doorlogs'; // Redirect to the door logs page without any query parameters
