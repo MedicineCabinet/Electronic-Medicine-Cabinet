@@ -108,3 +108,6 @@ function sortInventoryByExpirationDate() {
     .catch(error => console.error('Error sorting inventory by expiration date:', error));
 }
 
+function extractCSV() {
+    window.location.href = '/inventory?format=csv';
+}

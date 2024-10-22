@@ -1,5 +1,7 @@
 from flask import Flask, render_template, redirect, url_for, request, session, flash, make_response
 import datetime
+import csv
+from io import StringIO
 import mysql.connector
 
 conn = mysql.connector.connect(
@@ -93,29 +95,23 @@ def inventory():
     search_term = request.args.get('search', '').lower()
     sort_by = request.args.get('sort_by', 'name')  # Default to sorting by name
     order = request.args.get('order', 'asc')  # Default to ascending order
+    export_format = request.args.get('format')  # Check if the user wants CSV
 
-    # Ensure that only valid column names are used for sorting
     valid_sort_columns = ['name', 'type', 'quantity', 'unit', 'date_stored', 'expiration_date']
     if sort_by not in valid_sort_columns:
-        sort_by = 'name'  # Default to sorting by name if an invalid column is provided
+        sort_by = 'name'
 
-    # Use SQL-specific handling for numeric sorting when sorting by quantity
     sort_column = 'CAST(quantity AS UNSIGNED)' if sort_by == 'quantity' else sort_by
-
-    # Set the sort order (asc or desc)
     sort_order = 'ASC' if order == 'asc' else 'DESC'
 
-    # Fetch data from the database
     cursor = conn.cursor(dictionary=True)
     try:
-        # Modify query to include sorting
         query = f"SELECT name, type, quantity, unit, date_stored, expiration_date FROM medicine_inventory ORDER BY {sort_column} {sort_order}"
         cursor.execute(query)
         inventory_items = cursor.fetchall()
 
-        # Filter inventory based on search term if applicable
         if search_term:
-            filtered_items = [
+            inventory_items = [
                 item for item in inventory_items if (
                     search_term in item["name"].lower() or
                     search_term in item["type"].lower() or
@@ -125,26 +121,39 @@ def inventory():
                     search_term in item["expiration_date"].isoformat().lower()
                 )
             ]
-        else:
-            filtered_items = inventory_items
 
     except Exception as e:
-        filtered_items = []
-        print(f"Database error: {e}")  # Log the error
+        inventory_items = []
+        print(f"Database error: {e}")
     finally:
         cursor.close()
 
-    # If it's an AJAX request, return only the table rows
-    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-        return render_template('inventory_table_rows.html', inventory_items=filtered_items)
+    # Export CSV functionality
+    if export_format == 'csv':
+        output = StringIO()
+        writer = csv.writer(output)
+        writer.writerow(['Name', 'Type', 'Quantity', 'Unit', 'Date Stored', 'Expiration Date'])
 
-    # Render full page otherwise
-    return render_template('inventory.html', inventory_items=filtered_items)       
+        for item in inventory_items:
+            writer.writerow([item['name'], item['type'], item['quantity'], item['unit'], item['date_stored'], item['expiration_date']])
+
+        response = make_response(output.getvalue())
+        response.headers['Content-Disposition'] = 'attachment; filename=inventory_data.csv'
+        response.headers['Content-Type'] = 'text/csv'
+        return response
+
+    # Render the table rows for AJAX request
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        return render_template('inventory_table_rows.html', inventory_items=inventory_items)
+
+    # Render the full page otherwise
+    return render_template('inventory.html', inventory_items=inventory_items)
 
 @app.route('/doorlogs')
 def doorlogs():
     search_term = request.args.get('search', '').lower()
     sort_by = request.args.get('sort_by', 'username')  # Default sort column
+    export_format = request.args.get('format')  # Check if the user wants CSV
 
     cursor = conn.cursor(dictionary=True)
     try:
@@ -170,12 +179,26 @@ def doorlogs():
     finally:
         cursor.close()
 
+    # Export CSV functionality
+# Export CSV functionality
+    if export_format == 'csv':
+        output = StringIO()
+        writer = csv.writer(output)
+        writer.writerow(['Username', 'Account Type', 'Position', 'Date', 'Time', 'Action Taken'])
+
+        for log in door_logs:
+            writer.writerow([log['username'], log['accountType'], log['position'], log['date'], log['time'], log['action_taken']])
+
+        response = make_response(output.getvalue())
+        response.headers['Content-Disposition'] = 'attachment; filename=doorlogs_data.csv'
+        response.headers['Content-Type'] = 'text/csv'
+        return response
+
+
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         return render_template('doorlogs_table_rows.html', door_logs=door_logs)
 
     return render_template('doorlogs.html', door_logs=door_logs)
-
-
 
 @app.route('/notification')
 def notification():

@@ -71,4 +71,6 @@ function getColumnIndex(column) {
     const columns = ['username', 'accountType', 'position', 'date', 'time', 'action_taken'];
     return columns.indexOf(column);
 }
-
+function extractCSV() {
+    window.location.href = '/doorlogs?format=csv'; // Ensures it calls for CSV download
+}
