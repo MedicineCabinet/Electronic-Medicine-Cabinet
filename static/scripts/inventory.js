@@ -20,6 +20,7 @@ function refreshPage() {
     window.location.reload();
 }
 
+
 function sortInventoryByName() {
     // Fetch the inventory sorted by name via AJAX
     fetch(`/inventory?sort_by=name`, {
@@ -110,4 +111,8 @@ function sortInventoryByExpirationDate() {
 
 function extractCSV() {
     window.location.href = '/inventory?format=csv';
+}
+function extractCSVDoorlogs() {
+    // Directly download the CSV from the backend by navigating to the CSV endpoint
+    window.location.href = '/doorlogs?format=csv';
 }

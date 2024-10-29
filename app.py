@@ -160,6 +160,7 @@ def doorlogs():
         # Base query
         query = "SELECT username, accountType, position, date, time, action_taken FROM door_logs"
         
+        # Apply search if provided
         if search_term:
             query += " WHERE username LIKE %s OR accountType LIKE %s OR position LIKE %s OR date LIKE %s OR time LIKE %s OR action_taken LIKE %s"
             like_term = f"%{search_term}%"
@@ -171,6 +172,7 @@ def doorlogs():
         if sort_by in ['username', 'accountType', 'position', 'date', 'time', 'action_taken']:
             query += f" ORDER BY {sort_by}"
 
+        # Fetch the door logs
         door_logs = cursor.fetchall()
 
     except Exception as e:
@@ -180,7 +182,6 @@ def doorlogs():
         cursor.close()
 
     # Export CSV functionality
-# Export CSV functionality
     if export_format == 'csv':
         output = StringIO()
         writer = csv.writer(output)
@@ -194,12 +195,12 @@ def doorlogs():
         response.headers['Content-Type'] = 'text/csv'
         return response
 
-
+    # Return AJAX response for table rows
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         return render_template('doorlogs_table_rows.html', door_logs=door_logs)
 
+    # Render the main door logs template
     return render_template('doorlogs.html', door_logs=door_logs)
-
 @app.route('/notification')
 def notification():
     cursor = conn.cursor(dictionary=True)
