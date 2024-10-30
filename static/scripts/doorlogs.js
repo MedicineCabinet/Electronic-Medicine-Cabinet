@@ -17,9 +17,6 @@ function searchDoorLogs(event) {
 }
 
 
-function refreshDoorlogs() {
-    window.location.href = '/doorlogs'; // Redirect to the door logs page without any query parameters
-}
 function sortDoorLogsByUsername() {
     sortTable('username');
 }

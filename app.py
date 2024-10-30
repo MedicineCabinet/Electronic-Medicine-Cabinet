@@ -149,28 +149,33 @@ def inventory():
     # Render the full page otherwise
     return render_template('inventory.html', inventory_items=inventory_items)
 
+from flask import render_template, request, make_response
+import csv
+from io import StringIO
+
 @app.route('/doorlogs')
 def doorlogs():
     search_term = request.args.get('search', '').lower()
     sort_by = request.args.get('sort_by', 'username')  # Default sort column
     export_format = request.args.get('format')  # Check if the user wants CSV
 
+    # Sanitize sort_by to prevent SQL injection by allowing only specific columns
+    valid_columns = ['username', 'accountType', 'position', 'date', 'time', 'action_taken']
+    if sort_by not in valid_columns:
+        sort_by = 'username'
+
     cursor = conn.cursor(dictionary=True)
     try:
         # Base query
-        query = "SELECT username, accountType, position, date, time, action_taken FROM door_logs"
+        query = f"SELECT username, accountType, position, date, time, action_taken FROM door_logs"
         
         # Apply search if provided
         if search_term:
             query += " WHERE username LIKE %s OR accountType LIKE %s OR position LIKE %s OR date LIKE %s OR time LIKE %s OR action_taken LIKE %s"
             like_term = f"%{search_term}%"
-            cursor.execute(query, (like_term, like_term, like_term, like_term, like_term, like_term))
+            cursor.execute(query + f" ORDER BY {sort_by}", (like_term, like_term, like_term, like_term, like_term, like_term))
         else:
-            cursor.execute(query)
-
-        # Sort results based on sort_by parameter
-        if sort_by in ['username', 'accountType', 'position', 'date', 'time', 'action_taken']:
-            query += f" ORDER BY {sort_by}"
+            cursor.execute(query + f" ORDER BY {sort_by}")
 
         # Fetch the door logs
         door_logs = cursor.fetchall()
@@ -201,6 +206,7 @@ def doorlogs():
 
     # Render the main door logs template
     return render_template('doorlogs.html', door_logs=door_logs)
+
 @app.route('/notification')
 def notification():
     cursor = conn.cursor(dictionary=True)

@@ -19,7 +19,27 @@ function searchInventory(event) {
 function refreshPage() {
     window.location.reload();
 }
+function refreshDoorlogs() {
+    // Check if the current URL is already pointing to the 'doorlogs' route
+    if (window.location.pathname === "/doorlogs") {
+        // Reloads only the 'doorlogs' section
+        location.reload();
+    } else {
+        // Navigates back to 'doorlogs' if on a different route
+        window.location.href = "/doorlogs";
+    }
+}
 
+function refreshNotification() {
+    // Check if the current URL is already pointing to the 'notification' route
+    if (window.location.pathname === "/notification") {
+        // Reloads only the 'notification' page
+        location.reload();
+    } else {
+        // Navigates back to 'notification' if on a different route
+        window.location.href = "/notification";
+    }
+}
 
 function sortInventoryByName() {
     // Fetch the inventory sorted by name via AJAX
