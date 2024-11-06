@@ -32,6 +32,15 @@ document.addEventListener("DOMContentLoaded", function() {
     loadContent('inventory', 'inventory-link', 'offcanvas-inventory-link');
 });
 
+// Add function to load Doorlogs
+function loadDoorlogs() {
+    loadContent('doorlogs', 'doorlogs-link', 'offcanvas-doorlogs-link');
+}
+
+// Event listener for doorlogs link
+document.getElementById('doorlogs-link').addEventListener('click', loadDoorlogs);
+document.getElementById('offcanvas-doorlogs-link').addEventListener('click', loadDoorlogs);
+
 // Event Listener for Window Resize
 function checkScreenSizeAndCloseOffcanvas() {
     const offcanvasSidebar = document.getElementById('offcanvasSidebar');

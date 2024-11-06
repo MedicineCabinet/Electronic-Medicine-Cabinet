@@ -130,9 +130,19 @@ function sortInventoryByExpirationDate() {
 }
 
 function extractCSV() {
-    window.location.href = '/inventory?format=csv';
+    const now = new Date();
+    const formattedDate = now.toISOString().split('T')[0]; // YYYY-MM-DD
+    const formattedTime = now.toTimeString().split(' ')[0].replace(/:/g, '-'); // HH-MM-SS
+    const filename = `medicine_inventory_${formattedDate}_${formattedTime}.csv`;
+    
+    window.location.href = `/inventory?format=csv&filename=${filename}`;
 }
+
 function extractCSVDoorlogs() {
-    // Directly download the CSV from the backend by navigating to the CSV endpoint
-    window.location.href = '/doorlogs?format=csv';
+    const now = new Date();
+    const formattedDate = now.toISOString().split('T')[0]; // YYYY-MM-DD
+    const formattedTime = now.toTimeString().split(' ')[0].replace(/:/g, '-'); // HH-MM-SS
+    const filename = `door_logs_${formattedDate}_${formattedTime}.csv`;
+
+    window.location.href = `/doorlogs?format=csv&filename=${filename}`;
 }

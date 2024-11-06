@@ -93,9 +93,10 @@ def logout():
 @app.route('/inventory')
 def inventory():
     search_term = request.args.get('search', '').lower()
-    sort_by = request.args.get('sort_by', 'name')  # Default to sorting by name
-    order = request.args.get('order', 'asc')  # Default to ascending order
-    export_format = request.args.get('format')  # Check if the user wants CSV
+    sort_by = request.args.get('sort_by', 'name')
+    order = request.args.get('order', 'asc')
+    export_format = request.args.get('format')
+    filename = request.args.get('filename', 'inventory_data.csv')  # Default filename
 
     valid_sort_columns = ['name', 'type', 'quantity', 'unit', 'date_stored', 'expiration_date']
     if sort_by not in valid_sort_columns:
@@ -138,7 +139,7 @@ def inventory():
             writer.writerow([item['name'], item['type'], item['quantity'], item['unit'], item['date_stored'], item['expiration_date']])
 
         response = make_response(output.getvalue())
-        response.headers['Content-Disposition'] = 'attachment; filename=inventory_data.csv'
+        response.headers['Content-Disposition'] = f'attachment; filename={filename}'
         response.headers['Content-Type'] = 'text/csv'
         return response
 
@@ -149,27 +150,21 @@ def inventory():
     # Render the full page otherwise
     return render_template('inventory.html', inventory_items=inventory_items)
 
-from flask import render_template, request, make_response
-import csv
-from io import StringIO
-
 @app.route('/doorlogs')
 def doorlogs():
     search_term = request.args.get('search', '').lower()
     sort_by = request.args.get('sort_by', 'username')  # Default sort column
-    export_format = request.args.get('format')  # Check if the user wants CSV
+    export_format = request.args.get('format')
+    filename = request.args.get('filename', 'doorlogs_data.csv')  # Default filename if none is provided
 
-    # Sanitize sort_by to prevent SQL injection by allowing only specific columns
     valid_columns = ['username', 'accountType', 'position', 'date', 'time', 'action_taken']
     if sort_by not in valid_columns:
         sort_by = 'username'
 
     cursor = conn.cursor(dictionary=True)
     try:
-        # Base query
         query = f"SELECT username, accountType, position, date, time, action_taken FROM door_logs"
         
-        # Apply search if provided
         if search_term:
             query += " WHERE username LIKE %s OR accountType LIKE %s OR position LIKE %s OR date LIKE %s OR time LIKE %s OR action_taken LIKE %s"
             like_term = f"%{search_term}%"
@@ -177,7 +172,6 @@ def doorlogs():
         else:
             cursor.execute(query + f" ORDER BY {sort_by}")
 
-        # Fetch the door logs
         door_logs = cursor.fetchall()
 
     except Exception as e:
@@ -196,15 +190,15 @@ def doorlogs():
             writer.writerow([log['username'], log['accountType'], log['position'], log['date'], log['time'], log['action_taken']])
 
         response = make_response(output.getvalue())
-        response.headers['Content-Disposition'] = 'attachment; filename=doorlogs_data.csv'
+        response.headers['Content-Disposition'] = f'attachment; filename={filename}'
         response.headers['Content-Type'] = 'text/csv'
         return response
 
-    # Return AJAX response for table rows
+    # AJAX response for table rows
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         return render_template('doorlogs_table_rows.html', door_logs=door_logs)
 
-    # Render the main door logs template
+    # Main door logs template
     return render_template('doorlogs.html', door_logs=door_logs)
 
 @app.route('/notification')
@@ -228,22 +222,47 @@ def notification():
 
 
 
-@app.route('/accounts')
+@app.route('/accounts', methods=['GET', 'POST'])
 def accounts():
-    cursor = conn.cursor(dictionary=True)
-    try:
-        query = "SELECT username, position, accountType FROM users"
-        cursor.execute(query)
-        users = cursor.fetchall()
-    except Exception as e:
-        users = []
-        print(f"Database error: {e}")
-    finally:
-        cursor.close()
+    if request.method == 'POST':
+        # Handling the add user functionality
+        username = request.form.get('username')
+        position = request.form.get('position')
+        account_type = request.form.get('accountType')
 
-    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-        return render_template('accounts_table_rows.html', users=users)
-    return render_template('accounts.html', users=users)
+        # Check that all fields are provided
+        if not all([username, position, account_type]):
+            return jsonify({'success': False, 'error': 'All fields are required'})
+
+        cursor = conn.cursor()
+        try:
+            # Insert new user into the users table
+            query = "INSERT INTO users (username, position, accountType) VALUES (%s, %s, %s)"
+            cursor.execute(query, (username, position, account_type))
+            conn.commit()
+            return jsonify({'success': True})
+        except Exception as e:
+            print(f"Database error: {e}")
+            return jsonify({'success': False, 'error': str(e)})
+        finally:
+            cursor.close()
+    else:
+        # Handling the display of users
+        cursor = conn.cursor(dictionary=True)
+        try:
+            query = "SELECT username, position, accountType FROM users"
+            cursor.execute(query)
+            users = cursor.fetchall()
+        except Exception as e:
+            users = []
+            print(f"Database error: {e}")
+        finally:
+            cursor.close()
+
+        # Render partial template if AJAX request, otherwise render full page
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return render_template('accounts_table_rows.html', users=users)
+        return render_template('accounts.html', users=users)
 
 if __name__ == '__main__':
     app.run(debug=True)
