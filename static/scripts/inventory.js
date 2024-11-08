@@ -69,6 +69,20 @@ function sortInventoryByType() {
     })
     .catch(error => console.error('Error sorting inventory by type:', error));
 }
+function sortInventoryByDosage() {
+    // Fetch the inventory sorted by dosage via AJAX
+    fetch(`/inventory?sort_by=dosage`, {
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'  // Identify this as an AJAX request
+        }
+    })
+    .then(response => response.text())
+    .then(html => {
+        // Replace the table body with the sorted rows
+        document.getElementById('inventory-table-body').innerHTML = html;
+    })
+    .catch(error => console.error('Error sorting inventory by dosage:', error));
+}
 function sortInventoryByQuantity() {
     // Fetch the inventory sorted by quantity in ascending order via AJAX
     fetch(`/inventory?sort_by=quantity&order=asc`, {

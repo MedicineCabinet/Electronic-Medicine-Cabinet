@@ -98,16 +98,23 @@ def inventory():
     export_format = request.args.get('format')
     filename = request.args.get('filename', 'inventory_data.csv')  # Default filename
 
-    valid_sort_columns = ['name', 'type', 'quantity', 'unit', 'date_stored', 'expiration_date']
+    valid_sort_columns = ['name', 'type', 'dosage', 'quantity', 'unit', 'date_stored', 'expiration_date']
     if sort_by not in valid_sort_columns:
         sort_by = 'name'
 
-    sort_column = 'CAST(quantity AS UNSIGNED)' if sort_by == 'quantity' else sort_by
+    # Ensure proper sorting for 'quantity' and 'dosage'
+    if sort_by == 'quantity':
+        sort_column = 'CAST(quantity AS UNSIGNED)'
+    elif sort_by == 'dosage':
+        sort_column = 'dosage'  # Ensure sorting by dosage directly (if it's a string, it will be sorted alphabetically)
+    else:
+        sort_column = sort_by  # Default sorting for other fields
+
     sort_order = 'ASC' if order == 'asc' else 'DESC'
 
     cursor = conn.cursor(dictionary=True)
     try:
-        query = f"SELECT name, type, quantity, unit, date_stored, expiration_date FROM medicine_inventory ORDER BY {sort_column} {sort_order}"
+        query = f"SELECT name, type, dosage, quantity, unit, date_stored, expiration_date FROM medicine_inventory ORDER BY {sort_column} {sort_order}"
         cursor.execute(query)
         inventory_items = cursor.fetchall()
 
@@ -116,6 +123,7 @@ def inventory():
                 item for item in inventory_items if (
                     search_term in item["name"].lower() or
                     search_term in item["type"].lower() or
+                    search_term in item["dosage"].lower() or
                     search_term in str(item["quantity"]) or
                     search_term in item["unit"].lower() or
                     search_term in item["date_stored"].isoformat().lower() or
@@ -133,10 +141,10 @@ def inventory():
     if export_format == 'csv':
         output = StringIO()
         writer = csv.writer(output)
-        writer.writerow(['Name', 'Type', 'Quantity', 'Unit', 'Date Stored', 'Expiration Date'])
+        writer.writerow(['Name', 'Type', 'Dosage', 'Quantity', 'Unit', 'Date Stored', 'Expiration Date'])
 
         for item in inventory_items:
-            writer.writerow([item['name'], item['type'], item['quantity'], item['unit'], item['date_stored'], item['expiration_date']])
+            writer.writerow([item['name'], item['type'], item['dosage'], item['quantity'], item['unit'], item['date_stored'], item['expiration_date']])
 
         response = make_response(output.getvalue())
         response.headers['Content-Disposition'] = f'attachment; filename={filename}'
@@ -149,6 +157,7 @@ def inventory():
 
     # Render the full page otherwise
     return render_template('inventory.html', inventory_items=inventory_items)
+
 
 @app.route('/doorlogs')
 def doorlogs():

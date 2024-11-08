@@ -23,13 +23,14 @@
                         
                     </div>
 
-                    <div class="button-group">
-                        <button class="btn btn-primary" onclick="window.location.href='/doorlogs?sort_by=username'">Sort by Username</button>
-                        <button class="btn btn-primary" onclick="sortDoorLogsByAccountType()">Sort by Account Type</button>
-                        <button class="btn btn-primary" onclick="sortDoorLogsByPosition()">Sort by Position</button>
-                        <button class="btn btn-primary" onclick="sortDoorLogsByDate()">Sort by Date</button>
-                        <button class="btn btn-primary" onclick="sortDoorLogsByTime()">Sort by Time</button>
-                        <button class="btn btn-primary" onclick="sortDoorLogsByActionTaken()">Sort by Action Taken</button>
+                    <p class="sort-text mb-0 me-3">Sort by:</p>
+                    <div class="button-group" style="font-size: 2rem;">
+                        <button class="btn btn-primary" onclick="window.location.href='/doorlogs?sort_by=username'">Username</button>
+                        <button class="btn btn-primary" onclick="sortDoorLogsByAccountType()">Account Type</button>
+                        <button class="btn btn-primary" onclick="sortDoorLogsByPosition()">Position</button>
+                        <button class="btn btn-primary" onclick="sortDoorLogsByDate()">Date</button>
+                        <button class="btn btn-primary" onclick="sortDoorLogsByTime()">Time</button>
+                        <button class="btn btn-primary" onclick="sortDoorLogsByActionTaken()">Action Taken</button>
                     </div>
                 </div>
 

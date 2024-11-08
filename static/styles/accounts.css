@@ -8,3 +8,94 @@
 .button-container button {
     margin-left: 10px;
 }
+/* Set a fixed height for the table's container */
+.table-container {
+    height: 200px;
+    overflow-y: auto;
+}
+
+/* Button container styles */
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.button-container .btn {
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
+.button-group {
+    padding: 20px;
+}
+
+
+/* Change background color and font color of active tab */
+.nav-tabs .nav-link.active {
+    background-color: rgba(66, 167, 245, 1);
+    color: white;
+    border-color: rgba(66, 167, 245, 1);
+}
+
+/* Change font color of inactive tabs */
+.nav-tabs .nav-link {
+    color: black;
+}
+
+/* Hover effect for inactive tabs */
+.nav-tabs .nav-link:hover {
+    color: rgba(66, 167, 245);
+}
+
+.btn-custom-blue {
+    background-color: rgb(25, 139, 226);
+    color: white;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+.btn-custom-blue:hover {
+    background-color: rgba(66, 167, 245, 0.8);
+}
+
+/* Search bar styling */
+.search-bar {
+    display: flex;
+    align-items: center;
+    position: relative; /* Ensure the icon is positioned correctly */
+    margin-bottom: 20px;
+    margin-left: 10px;
+}
+
+/* Adjusting the width of the search bar */
+.search-bar input {
+    width: 300px; /* Set a default width */
+    max-width: 100%; /* Ensure it doesn't overflow */
+    padding: 10px;
+    border-radius: 20px;
+    border: 1px solid #ced4da;
+    padding-left: 40px; /* Make space for the icon */
+    transition: width 0.3s ease; /* Smooth transition on resize */
+    height: 35px;
+}
+
+.search-bar i {
+    position: absolute;
+    left: 15px; /* Position the icon inside the search bar */
+    color: #6c757d;
+    font-size: 20px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .search-bar input {
+        width: 100%; /* Full width on smaller screens */
+    }
+
+    .button-container {
+        flex-direction: column; /* Stack buttons on smaller screens */
+        align-items: flex-start; /* Align buttons to the start */
+    }
+}

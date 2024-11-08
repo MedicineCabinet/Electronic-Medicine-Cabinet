@@ -22,13 +22,15 @@
                         </form>
                     </div>
 
+                    <p class="sort-text mb-0 me-3">Sort by:</p>
                     <div class="button-group">
-                        <button class="btn btn-primary" onclick="sortInventoryByName()">Sort by Name</button>
-                        <button class="btn btn-primary" onclick="sortInventoryByType()">Sort by Type</button>
-                        <button class="btn btn-primary" onclick="sortInventoryByQuantity()">Sort by Quantity</button>
-                        <button class="btn btn-primary" onclick="sortInventoryByUnit()">Sort by Unit</button>
-                        <button class="btn btn-primary" onclick="sortInventoryByDateStored()">Sort by Date Stored</button>
-                        <button class="btn btn-primary" onclick="sortInventoryByExpirationDate()">Sort by Expiration Date</button>
+                        <button class="btn btn-primary" onclick="sortInventoryByName()">Name</button>
+                        <button class="btn btn-primary" onclick="sortInventoryByType()">Type</button>
+                    <!--<button class="btn btn-primary" onclick="sortInventoryByDosage()">Dosage</button>
+                        <button class="btn btn-primary" onclick="sortInventoryByQuantity()">Quantity</button>-->
+                        <button class="btn btn-primary" onclick="sortInventoryByUnit()">Unit</button>
+                        <button class="btn btn-primary" onclick="sortInventoryByDateStored()">Stored</button>
+                        <button class="btn btn-primary" onclick="sortInventoryByExpirationDate()">Expiration Date</button>
                     </div>
                 </div>
 
@@ -38,6 +40,7 @@
                             <tr>
                                 <th>Name</th>
                                 <th>Type</th>
+                                <th>Dosage</th>
                                 <th>Quantity</th>
                                 <th>Unit</th>
                                 <th>Date Stored</th>

@@ -2,6 +2,7 @@
 <tr>
     <td>{{ item.name }}</td>
     <td>{{ item.type }}</td>
+    <td>{{ item.dosage }}</td>
     <td>{{ item.quantity }}</td>
     <td>{{ item.unit }}</td>
     <td>{{ item.date_stored }}</td>
@@ -9,6 +10,6 @@
 </tr>
 {% else %}
 <tr>
-    <td colspan="6">No results found</td>
+    <td colspan="7">No results found</td>
 </tr>
 {% endfor %}

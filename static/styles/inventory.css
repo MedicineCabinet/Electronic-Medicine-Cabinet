@@ -50,6 +50,12 @@
     background-color: rgba(66, 167, 245, 0.8);
 }
 
+.sort-text {
+    margin-left: 620px;
+    font-size: 1.2rem;
+    color: white;  
+}
+
 /* Search bar styling */
 .search-bar {
     display: flex;
